@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>dropmail.io</title>
+<link href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
+<link href="http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" />
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
+<script src="https://raw.github.com/wycats/handlebars.js/1.0.0-rc.3/dist/handlebars.js"></script>
+<script src="file://localhost/Users/tyler/Code/tylersmalley/dropmail-ux/css_inline_transform.js"></script>
+
+<style type="text/css" media="screen">
+  .edit textarea {
+    width: 95%;
+    max-width: 95%;
+    min-height: 400px;
+  }
+</style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span6 edit">
+        <ul class="nav nav-tabs" id="edit-tabs">
+          <li><a href="#html" data-toggle="tab">HTML</a></li>
+          <li><a href="#text" data-toggle="tab">TEXT</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="html">
+            <textarea id="html-edit"></textarea>
+          </div>
+          <div class="tab-pane active" id="text">
+            <textarea id="text-edit"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <iframe frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var foo = undefined;
+
+    (function() {
+      $('#edit-tabs a:first').tab('show');
+
+      var contents = $('iframe').contents()
+        , body = contents.find('body');
+
+      $('textarea').keyup(function() {
+        var $this = $(this)
+          , doc = document.implementation.createHTMLDocument(''),
+            style = document.createElement('style');
+
+        if ( $this.attr('id') === 'html-edit') {
+          try {
+            var template = Handlebars.compile($this.val())
+              , attributes = { first_name: 'Tyler', last_name: 'Smalley' }
+              , html = template(attributes)
+              , $body = $(body);
+
+            body.html(html);
+
+            style.textContent = $body.find('style').html();
+            doc.body.appendChild(style);
+
+            $.each(style.sheet.cssRules, function(){
+              var element = $body.find(this.selectorText)
+                , styles = $(element).attr('style') || '';
+
+              styles += this.style.cssText;
+              $(element).attr('style', styles);
+
+              console.log(body.html());
+            });
+
+            $body.find('style').remove();
+          } catch(e) {
+            console.log('invalid markup');
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
