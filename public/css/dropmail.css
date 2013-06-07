@@ -2954,3 +2954,9 @@ input[type="submit"].btn.btn-mini {
 .navbar-inverse .btn-navbar.active {
   background-color: #000000 \9;
 }
+form.signup input {
+  width: 93%;
+}
+form.signup button[type=submit] {
+  width: 100%;
+}
