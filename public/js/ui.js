@@ -1,3 +1,11 @@
+
+function onSubmit($form, model, callback){
+  $form.on('submit', function(){
+    model.create(serializeObject($form), respond($form, callback));
+    return false;
+  });
+}
+
 function serializeObject($form){
   var params = {};
 
@@ -22,7 +30,7 @@ function respond($form, callback){
       for (var name in errors) {
         var input = $('input[name=' + name + ']');
         input.closest('.control-group').addClass('error');
-        input.after("<div class='help-block'>" + errors[name] + '<' + '/div>');
+        input.after("<div class='help-block'>" + errors[name] + '</div>');
       }
 
       $button.attr('disabled', false).text(buttonText);
