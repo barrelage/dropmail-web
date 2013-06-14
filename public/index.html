@@ -30,9 +30,21 @@
 
         <div class='span3'>
           <form action='#' class='signup'>
-            <input type='text' name='name' placeholder='First Last'>
-            <input type='text' name='email' placeholder='user@example.com'>
-            <input type='password' name='password' placeholder='••••••••'>
+            <div class='control-group'>
+              <div class='controls'>
+                <input type='text' name='name' placeholder='First Last'>
+              </div>
+            </div>
+            <div class='control-group'>
+              <div class='controls'>
+                <input type='text' name='email' placeholder='user@example.com'>
+              </div>
+            </div>
+            <div class='control-group'>
+              <div class='controls'>
+                <input type='password' name='password' placeholder='••••••••'>
+              </div>
+            </div>
             <button class='btn btn-primary' type='submit'>Sign Up</button>
           </form>
         </div>
@@ -46,19 +58,28 @@
       Dropmail.Model.baseURL = 'http://0.0.0.0:9393';
       Dropmail.Model.key = 'w9GxuBn8ZeujTdIz1dSurEsmPkBbi1Wq2R53EW0mXY4';
 
-      var form;
+      var $form = $('form.signup');
       $(function(){
-        $('form.signup').on('submit', function(){
+        $form.on('submit', function(){
           var params = {}
             , user;
           $.each($(this).serializeArray(), function(){
             params[this.name] = this.value;
           });
 
-          user = new Dropmail.User(params);
-          user.save(function(err, user){
-            console.log(err);
-            console.log(user);
+          user = Dropmail.User.create(params, function(err, user){
+            $form.find('.control-group').removeClass('error');
+            $form.find('.help-block').remove();
+
+            if (err) {
+              var errors = err.attributes;
+
+              for (var name in errors) {
+                var input = $('input[name=' + name + ']')
+                input.closest('.control-group').addClass('error');
+                input.after("<div class='help-block'>" + errors[name] + '<' + '/div>');
+              }
+            }
           });
 
           return false;
