@@ -22,15 +22,19 @@ $(DROPMAIL_CSS): node_modules submodules
 	@./node_modules/.bin/lessc less/dropmail.less > $(DROPMAIL_CSS_TMP)
 	@mv $(DROPMAIL_CSS_TMP) $(DROPMAIL_CSS)
 
-node_modules:
-	@npm install
-
 $(DROPMAIL_JS): dropmail.js
-	cd $(PWD)/dropmail.js && make
-	ln -fnsv $(PWD)/dropmail.js/build/dropmail.js $(PWD)/public/js/dropmail.js
+	@cd $(PWD)/dropmail.js && make
+	@ln -fnsv $(PWD)/dropmail.js/build/dropmail.js $(PWD)/public/js/dropmail.js
+
+clean:
+	@cd $(PWD)/dropmail.js && make clean
+	rm $(DROPMAIL_JS) $(DROPMAIL_CSS)
 
 dropmail.js: submodules
 	@cd $(PWD)/dropmail.js && npm install
+
+node_modules:
+	@npm install
 
 submodules:
 	@git submodule update --init
