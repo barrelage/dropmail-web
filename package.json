@@ -1,0 +1,16 @@
+{
+    "name": "dropmail-web"
+  , "description": "The frontend powering the dropmail website."
+  , "version": "0.0.1"
+  , "private": true
+  , "scripts": {
+      "install": "make"
+    }
+  , "repository": {
+        "type": "git"
+      , "url": "https://github.com/kainosnoema/dropmail-web.git"
+    }
+  , "devDependencies": {
+      "less": ">= 1.4"
+  }
+}
