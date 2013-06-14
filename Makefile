@@ -1,17 +1,25 @@
 
-DROPMAIL = public/css/dropmail.css
-DROPMAIL_LESS = less/dropmail.less
-CHECK = \033[32m✔\033[39m
+MAKEFLAGS += --check-symlink-times
+
+DROPMAIL_CSS = public/css/dropmail.css
+DROPMAIL_JS = public/js/dropmail.js
 
 default: install build
 
-install:
-	@printf "Updating submodules...                                  "
-	@git submodule init   >/dev/null
-	@git submodule update >/dev/null
-	@echo "${CHECK} Done"
+install: $(DROPMAIL_JS)
 
-build:
-	@printf "Compiling CSS...                                        "
-	@./node_modules/.bin/lessc ${DROPMAIL_LESS} > ${DROPMAIL}
-	@echo "${CHECK} Done"
+build: $(DROPMAIL_CSS)
+
+$(DROPMAIL_CSS): node_modules submodules
+	@./node_modules/.bin/lessc less/dropmail.less > $(DROPMAIL_CSS)
+
+$(DROPMAIL_JS): dropmail.js
+	ln -fnsv $(PWD)/dropmail.js/build/dropmail.js $(PWD)/public/js/dropmail.js
+
+dropmail.js: submodules
+
+node_modules:
+	@npm install
+
+submodules:
+	@git submodule update --init
