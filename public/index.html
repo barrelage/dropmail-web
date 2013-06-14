@@ -1,68 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset='utf-8'>
     <title>Dropmail</title>
-    <style>
-      * {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 16px;
-        line-height: 20px;
-      }
-
-      body {
-        background-color: #2c76b6;
-        padding: 0;
-        margin: 0;
-      }
-
-      button,
-      input {
-        border-radius: 5px;
-        background-color: #fff;
-        padding: 5px;
-      }
-
-      input#name {
-        width: 235px;
-      }
-
-      footer {
-        margin: 20px 0;
-      }
-
-      #container {
-        margin: 0 auto;
-        width: 300px;
-        text-align: center;
-      }
-
-      #logo {
-        margin: 20px 0;
-      }
-    </style>
+    <link href='css/dropmail.css' rel='stylesheet'>
   </head>
-  <body>
-    <div id='container'>
 
-      <div id='logo'>
-        <img src='images/logo.png' width='250' alt='Dropmail'>
+  <body>
+    <div class='container'>
+      <div class='row'>
+        <div class='span12'>
+          <div class='navbar'>
+            <ul class='nav pull-right actions'>
+              <li><a href='#'>Features</a></li>
+              <li><a href='#'>Pricing</a></li>
+            </ul>
+          </div>
+          <div class='header-logo'>
+            <a href='/'>Dropmail</a>
+          </div>
+        </div>
       </div>
 
-      <form id='signup' action='#'>
-        <label>
-          <input type='text' id='name' name='name' placeholder='John Doe' data-dropmail='name'>
-        </label>
+      <div class='row'>
+        <div class='span9'>
+          <h1>Powerful transactional email management</h1>
+          <p class='lead'>Empowering people to get shit done</p>
+        </div>
 
-        <label>
-          <input type='text' id='email' name='email' placeholder='you@example.com' data-dropmail='email'>
-        </label>
-        <button type='submit' data-dropmail='submit'>Submit</button>
-      </form>
-
-      <footer>
-        &copy; 2013 Barrel Age Inc.
-      </footer>
+        <div class='span3'>
+          <form action='#' class='signup'>
+            <input type='text' name='name' placeholder='First Last'>
+            <input type='text' name='email' placeholder='user@example.com'>
+            <input type='password' name='password' placeholder='••••••••'>
+            <button class='btn btn-primary' type='submit'>Sign Up</button>
+          </form>
+        </div>
+      </div>
     </div>
+
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+    <script src='js/dropmail.js'></script>
+
+    <script>
+      Dropmail.Model.baseURL = 'http://0.0.0.0:9292';
+      Dropmail.Model.key = 'w9GxuBn8ZeujTdIz1dSurEsmPkBbi1Wq2R53EW0mXY4';
+
+      var form;
+      $(function(){
+        $('form.signup').on('submit', function(){
+          var params = {}
+            , user;
+          $.each($(this).serializeArray(), function(){
+            params[this.name] = this.value;
+          });
+
+          user = new Dropmail.User(params);
+          user.save(function(err, user){
+            console.log(err);
+            console.log(user);
+          });
+
+          return false;
+        });
+      });
+    </script>
   </body>
 </html>

@@ -1,0 +1,6 @@
+[submodule "bootstrap"]
+	path = bootstrap
+	url = git://github.com/twitter/bootstrap.git
+[submodule "dropmail.js"]
+	path = dropmail.js
+	url = git@github.com:stephencelis/dropmail.js.git
