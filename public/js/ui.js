@@ -30,7 +30,7 @@ function respond($form, callback){
       for (var name in errors) {
         var input = $('input[name=' + name + ']');
         input.closest('.control-group').addClass('error');
-        input.after("<div class='help-block'>" + errors[name] + '</div>');
+        input.after("<div class='help-block'>" + toSentence(errors[name]) + '</div>');
       }
 
       $button.attr('disabled', false).text(buttonText);
@@ -39,4 +39,8 @@ function respond($form, callback){
 
     if (callback) callback(err, object);
   };
+}
+
+function toSentence(array){
+  return array.join(', ');
 }
