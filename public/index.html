@@ -61,10 +61,11 @@
 
       $(function(){
         var $form = $('form.signup');
-        onSubmit($form, Dropmail.User, function(err, user){
-          if (user) {
-            $form.replaceWith('<div>Hi ' + user.get('name') + ', thanks for signing up!<' + '/div>');
-          }
+        Dropmail.User.form($form, function(err, user){
+          if (err) { return ui.handleValidation(err, $form); }
+          $form.replaceWith(
+            '<div>Hi ' + user.get('name') + ', thanks for signing up!<' + '/div>'
+          );
         });
       });
     </script>
