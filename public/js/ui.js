@@ -1,4 +1,14 @@
-function respond(form, callback){
+function serializeObject($form){
+  var params = {};
+
+  $.each($form.serializeArray(), function(){
+    params[this.name] = this.value;
+  });
+
+  return params;
+}
+
+function respond($form, callback){
   var $button = $(this).children('button')
     , buttonText = $button.text();
 

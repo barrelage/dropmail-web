@@ -59,16 +59,10 @@
       Dropmail.Model.baseURL = 'http://0.0.0.0:9393';
       Dropmail.Model.key = 'w9GxuBn8ZeujTdIz1dSurEsmPkBbi1Wq2R53EW0mXY4';
 
-      var $form = $('form.signup');
       $(function(){
+        var $form = $('form.signup');
         $form.on('submit', function(){
-          var params = {};
-
-          $.each($(this).serializeArray(), function(){
-            params[this.name] = this.value;
-          });
-
-          Dropmail.User.create(params, respond($(this), function(err, user){
+          Dropmail.User.create(serializeObject($form), respond($form, function(err, user){
             if (user) {
               $form.replaceWith('<div>Hi ' + user.get('name') + ', thanks for signing up!<' + '/div>');
             }
