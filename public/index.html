@@ -29,7 +29,7 @@
         </div>
 
         <div class='span3'>
-          <form action='/users' class='signup'>
+          <form action='#' class='signup'>
             <input type='text' name='name' placeholder='First Last'>
             <input type='text' name='email' placeholder='user@example.com'>
             <input type='password' name='password' placeholder='••••••••'>
@@ -43,7 +43,27 @@
     <script src='js/dropmail.js'></script>
 
     <script>
-      Dropmail.Model.baseURL = 'http://0.0.0.0:9393';
+      Dropmail.Model.baseURL = 'http://0.0.0.0:9292';
+      Dropmail.Model.key = 'w9GxuBn8ZeujTdIz1dSurEsmPkBbi1Wq2R53EW0mXY4';
+
+      var form;
+      $(function(){
+        $('form.signup').on('submit', function(){
+          var params = {}
+            , user;
+          $.each($(this).serializeArray(), function(){
+            params[this.name] = this.value;
+          });
+
+          user = new Dropmail.User(params);
+          user.save(function(err, user){
+            console.log(err);
+            console.log(user);
+          });
+
+          return false;
+        });
+      });
     </script>
   </body>
 </html>
