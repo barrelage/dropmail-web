@@ -53,6 +53,7 @@
 
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
     <script src='js/dropmail.js'></script>
+    <script src='js/ui.js'></script>
 
     <script>
       Dropmail.Model.baseURL = 'http://0.0.0.0:9393';
@@ -61,35 +62,17 @@
       var $form = $('form.signup');
       $(function(){
         $form.on('submit', function(){
-          var $button = $(this).children('button')
-            , buttonText = $button.text()
-            , params = {}
-            , user;
-
-          $button.attr('disabled', true).text($button.data('loading'));
+          var params = {};
 
           $.each($(this).serializeArray(), function(){
             params[this.name] = this.value;
           });
 
-          user = Dropmail.User.create(params, function(err, user){
-            $form.find('.control-group').removeClass('error');
-            $form.find('.help-block').remove();
-
-            if (err) {
-              var errors = err.attributes;
-
-              for (var name in errors) {
-                var input = $('input[name=' + name + ']')
-                input.closest('.control-group').addClass('error');
-                input.after("<div class='help-block'>" + errors[name] + '<' + '/div>');
-              }
-
-              $button.attr('disabled', false).text(buttonText);
-              return;
+          Dropmail.User.create(params, respond($(this), function(err, user){
+            if (user) {
+              $form.replaceWith('<div>Hi ' + user.get('name') + ', thanks for signing up!<' + '/div>');
             }
-          });
-
+          }));
           return false;
         });
       });
