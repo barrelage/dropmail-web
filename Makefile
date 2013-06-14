@@ -15,7 +15,3 @@ build:
 	@printf "Compiling CSS...                                        "
 	@./node_modules/.bin/lessc ${DROPMAIL_LESS} > ${DROPMAIL}
 	@echo "${CHECK} Done"
-
-watch:
-	@echo "Watching less files..."; \
-	watchr -e "watch('less/.*\.less') { system 'make' }"
