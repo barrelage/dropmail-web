@@ -26,9 +26,11 @@ node_modules:
 	@npm install
 
 $(DROPMAIL_JS): dropmail.js
+	cd $(PWD)/dropmail.js && node build
 	ln -fnsv $(PWD)/dropmail.js/build/dropmail.js $(PWD)/public/js/dropmail.js
 
 dropmail.js: submodules
+	@cd $(PWD)/dropmail.js && npm install
 
 submodules:
 	@git submodule update --init
