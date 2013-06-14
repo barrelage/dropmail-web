@@ -24,7 +24,7 @@ $(DROPMAIL_CSS): node_modules submodules
 
 $(DROPMAIL_JS): dropmail.js
 	@cd $(PWD)/dropmail.js && make
-	@ln -fnsv $(PWD)/dropmail.js/build/dropmail.js $(PWD)/public/js/dropmail.js
+	@ln -fnsv $(PWD)/dropmail.js/build/dropmail.debug.js $(PWD)/public/js/dropmail.js
 
 clean:
 	@cd $(PWD)/dropmail.js && make clean
