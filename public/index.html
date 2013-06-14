@@ -45,7 +45,7 @@
                 <input type='password' name='password' placeholder='••••••••'>
               </div>
             </div>
-            <button class='btn btn-primary' type='submit'>Sign Up</button>
+            <button class='btn btn-primary' type='submit' data-loading='Loading…'>Sign Up</button>
           </form>
         </div>
       </div>
@@ -62,10 +62,11 @@
       $(function(){
         $form.on('submit', function(){
           var $button = $(this).children('button')
+            , buttonText = $button.text()
             , params = {}
             , user;
 
-          $button.attr('disabled', true);
+          $button.attr('disabled', true).text($button.data('loading'));
 
           $.each($(this).serializeArray(), function(){
             params[this.name] = this.value;
@@ -84,7 +85,7 @@
                 input.after("<div class='help-block'>" + errors[name] + '<' + '/div>');
               }
 
-              $button.attr('disabled', false);
+              $button.attr('disabled', false).text(buttonText);
               return;
             }
           });
