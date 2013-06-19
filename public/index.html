@@ -61,14 +61,15 @@
     <script src='js/ui.js'></script>
 
     <script>
-      Dropmail.Model.baseURL = 'http://0.0.0.0:9393';
-      Dropmail.authenticate($.cookie('key'));
+      Dropmail.baseURL = 'http://0.0.0.0:9393';
+      var dropmail = new Dropmail();
+      dropmail.authenticate($.cookie('key'));
 
       $(function(){
         var $form = $('form.signup');
 
-        if (Dropmail.Model.key) {
-          Dropmail.User.me(function(err, user){
+        if (dropmail.credentials) {
+          dropmail.User.me(function(err, user){
             if (err) return signedOut();
             signedIn(user);
           });
@@ -77,14 +78,14 @@
         }
 
         function signedOut(){
-          Dropmail.User.form($form, function(err, user){
+          dropmail.User.form($form, function(err, user){
             if (err) { return ui.handleValidation(err, $form); }
 
-            Dropmail.authenticate(user);
-            Dropmail.Authorization.save(function(err, auth){
+            dropmail.authenticate(user);
+            dropmail.Authorization.save(function(err, auth){
               if (err) { /* TODO: handle errors */ }
 
-              Dropmail.authenticate(auth);
+              dropmail.authenticate(auth);
               $.cookie('key', auth.get('key'));
 
               signedIn(user);
