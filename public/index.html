@@ -70,14 +70,16 @@
 
         if (dropmail.credentials) {
           dropmail.User.me(function(err, user){
-            if (err) return signedOut();
+            if (err) return signOut();
             signedIn(user);
           });
         } else {
-          signedOut();
+          signOut();
         }
 
-        function signedOut(){
+        function signOut(){
+          $.removeCookie('key');
+
           dropmail.User.form($form, function(err, user){
             if (err) { return ui.handleValidation(err, $form); }
 
