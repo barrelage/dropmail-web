@@ -56,22 +56,49 @@
     </div>
 
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+    <script src='js/vendor/jquery.cookie.js'></script>
     <script src='js/dropmail.js'></script>
     <script src='js/ui.js'></script>
 
     <script>
       Dropmail.Model.baseURL = 'http://0.0.0.0:9393';
-      Dropmail.Model.key = 'w9GxuBn8ZeujTdIz1dSurEsmPkBbi1Wq2R53EW0mXY4';
+      Dropmail.authenticate($.cookie('key'));
 
       $(function(){
         var $form = $('form.signup');
-        Dropmail.User.form($form, function(err, user){
-          if (err) { return ui.handleValidation(err, $form); }
+
+        if (Dropmail.Model.key) {
+          Dropmail.User.me(function(err, user){
+            if (err) return signedOut();
+            signedIn(user);
+          });
+        } else {
+          signedOut();
+        }
+
+        function signedOut(){
+          Dropmail.User.form($form, function(err, user){
+            if (err) { return ui.handleValidation(err, $form); }
+
+            Dropmail.authenticate(user);
+            Dropmail.Authorization.save(function(err, auth){
+              if (err) { /* TODO: handle errors */ }
+
+              Dropmail.authenticate(auth);
+              $.cookie('key', auth.get('key'));
+
+              signedIn(user);
+            });;
+          });
+        }
+
+        function signedIn(user){
           $form.replaceWith(
             '<div>Hi ' + user.get('name') + ', thanks for signing up!<' + '/div>'
           );
-        });
+        }
       });
+
     </script>
   </body>
 </html>
