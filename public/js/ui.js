@@ -7,6 +7,9 @@ ui.handleValidation = function(err, $form){
   $form.find('.control-group').removeClass('error');
   $form.find('.help-block').remove();
 
+  if (!err) return;
+
+  if (!err.attributes) return alert(err.message); // TODO: Global alerting.
   var errors = err.attributes;
 
   for (var name in errors) {
