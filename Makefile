@@ -11,7 +11,7 @@ install: $(DROPMAIL_JS)
 
 update: install
 	@git submodule foreach git checkout master >/dev/null 2>&1
-	@git submodule foreach git pull
+	@git submodule foreach git pull origin master
 
 build: $(DROPMAIL_CSS)
 
