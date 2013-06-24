@@ -29,79 +29,24 @@
           <p class='lead'>Empowering people to get shit done</p>
         </div>
 
-        <div class='span3'>
-          <form action='#' method='post' class='signup'>
-            <div class='control-group'>
-              <label class='control-label' for='name'>Name</label>
-              <div class='controls'>
-                <input type='text' name='name' placeholder='First Last'>
-              </div>
-            </div>
-            <div class='control-group'>
-              <label class='control-label' for='email'>Email</label>
-              <div class='controls'>
-                <input type='email' name='email' placeholder='user@example.com'>
-              </div>
-            </div>
-            <div class='control-group'>
-              <label class='control-label' for='password'>Password</label>
-              <div class='controls'>
-                <input type='password' name='password' placeholder='••••••••'>
-              </div>
-            </div>
-            <button class='btn btn-primary' type='submit' data-loading='Loading…'>Sign Up</button>
-          </form>
-        </div>
+        <div class='span3 signup-form'></div>
       </div>
     </div>
 
-    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
-    <script src='js/vendor/jquery.cookie.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/react/0.3.2/react.min.js'></script>
     <script src='js/dropmail.js'></script>
-    <script src='js/ui.js'></script>
+    <script src='js/dropmail-web.js'></script>
+    <script src='js/dropmail-ui.js'></script>
 
     <script>
-      Dropmail.baseURL = 'http://0.0.0.0:9393';
-      var dropmail = new Dropmail();
-      dropmail.authenticate($.cookie('key'));
-
       $(function(){
-        var $form = $('form.signup');
-
-        if (dropmail.credentials) {
-          dropmail.User.me(function(err, user){
-            if (err) return signOut();
-            signedIn(user);
-          });
-        } else {
-          signOut();
-        }
-
-        function signOut(){
-          $.removeCookie('key');
-
-          dropmail.User.form($form, function(err, user){
-            if (err) { return ui.handleValidation(err, $form); }
-
-            dropmail.authenticate(user);
-            dropmail.Authorization.save(function(err, auth){
-              if (err) { /* TODO: handle errors */ }
-
-              dropmail.authenticate(auth);
-              $.cookie('key', auth.get('key'));
-
-              signedIn(user);
-            });;
-          });
-        }
-
-        function signedIn(user){
-          $form.replaceWith(
-            '<div>Hi ' + user.get('name') + ', thanks for signing up!<' + '/div>'
-          );
-        }
+        app = new DropmailWeb();
+        app.start();
       });
-
     </script>
   </body>
 </html>
