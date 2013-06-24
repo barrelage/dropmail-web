@@ -3,6 +3,9 @@
   , "description": "The frontend powering the dropmail website."
   , "version": "0.0.1"
   , "private": true
+  , "dependencies": {
+      "react-tools": "*"
+    }
   , "scripts": {
       "install": "make"
     }
