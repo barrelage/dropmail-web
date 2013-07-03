@@ -12,12 +12,12 @@ DropmailApp = React.createClass({
     }
 
     return {
-        user: null
-      , content: SplashPage({ onUserChange: this.handleUserChange })
+      user: null,
+      content: SplashPage({ onUserChange: this.handleUserChange })
     };
+  },
 
-  }
-, render: function(){
+  render: function(){
     return (
       <div class='layout'>
         <div class='row'>
@@ -34,8 +34,9 @@ DropmailApp = React.createClass({
         {this.state.content}
       </div>
     );
-  }
-, actions: function(){
+  },
+
+  actions: function(){
     var items = [
       <a href='/features'>Features</a>,
       <a href='/pricing'>Pricing</a>,
@@ -49,9 +50,9 @@ DropmailApp = React.createClass({
       ];
     }
     return items;
-  }
+  },
 
-, signIn: React.autoBind(function(credentials){
+  signIn: React.autoBind(function(credentials){
     dropmail.authenticate(credentials);
 
     dropmail.Authorization.save(function(err, auth){
@@ -62,9 +63,9 @@ DropmailApp = React.createClass({
     });
 
     return false;
-  })
+  }),
 
-, handleUserChange: React.autoBind(function(user){
+  handleUserChange: React.autoBind(function(user){
     var pageOptions = { onUserChange: this.handleUserChange }
       , content = SplashPage(pageOptions);
 
@@ -72,13 +73,13 @@ DropmailApp = React.createClass({
     this.setState({ user: user, content: content });
 
     return false;
-  })
+  }),
 
   /*
    * click handler to sign user out and redirect them to marketing
    * splash page
    */
-, signOut: React.autoBind(function(){
+  signOut: React.autoBind(function(){
     $.removeCookie('key');
     this.handleUserChange(null);
 
@@ -103,8 +104,9 @@ HeaderNav = React.createClass({
 SplashPage = React.createClass({
   getInitialState: function(){
     return { errors: {} };
-  }
-, handleSubmit: React.autoBind(function(){
+  },
+
+  handleSubmit: React.autoBind(function(){
     var self = this
       , attributes = {}
       , user;
@@ -129,8 +131,9 @@ SplashPage = React.createClass({
     });
 
     return false;
-  })
-, render: function(){
+  }),
+
+  render: function(){
     var errors = this.state.errors;
 
     return (

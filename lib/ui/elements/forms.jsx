@@ -35,6 +35,6 @@ FormField = React.createClass({
           {helpBlock}
         </div>
       </div>
-    )
+    );
   }
 });
