@@ -3,4 +3,4 @@
 	url = git://github.com/twitter/bootstrap.git
 [submodule "dropmail.js"]
 	path = dropmail.js
-	url = git@github.com:stephencelis/dropmail.js.git
+	url = git@github.com:barrelage/dropmail.js.git
