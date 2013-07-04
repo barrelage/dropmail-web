@@ -14,16 +14,16 @@ Pages.MarketingSplash = React.createClass({
       attributes[name] = value.trim();
     }
 
-    user = new dropmail.User(attributes);
+    user = new app.client.User(attributes);
     user.save(function(err, user){
       if (err) return self.setState({ errors: err.attributes });
       self.props.onUserChange(user);
 
-      dropmail.authenticate(user);
-      dropmail.Authorization.save(function(err, auth){
+      app.client.authenticate(user);
+      app.client.Authorization.save(function(err, auth){
         if (err) console.log(err); /* TODO: handle errors */
 
-        dropmail.authenticate(auth);
+        app.client.authenticate(auth);
         $.cookie('key', auth.get('key'));
       });
     });
