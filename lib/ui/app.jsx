@@ -3,7 +3,12 @@ Pages = {};
 
 App = React.createClass({
   getInitialState: function(){
-    this.loadCurrentUser();
+    var self = this;
+
+    app.client.loadCurrentUser(function(user){
+      self.handleUserChange(user);
+    });
+
     return { user: null };
   },
 
@@ -31,12 +36,12 @@ App = React.createClass({
   },
 
   signIn: React.autoBind(function(credentials){
-    dropmail.authenticate(credentials);
+    app.client.authenticate(credentials);
 
-    dropmail.Authorization.save(function(err, auth){
+    app.client.Authorization.save(function(err, auth){
       if (err) console.log(err); /* TODO: handle errors */
 
-      dropmail.authenticate(auth);
+      app.client.authenticate(auth);
       $.cookie('key', auth.get('key'));
     });
 
@@ -47,22 +52,7 @@ App = React.createClass({
     this.setState({ user: user });
     if (!user) $.removeCookie('key');
     return false;
-  }),
+  })
 
-  /*
-   * uses the key stored in the a cookie to set user state
-   */
-  loadCurrentUser: function(){
-    var self = this
-      , key = $.cookie('key');
-
-    if (!key) return;
-    dropmail.credentials = { key: key };
-
-    dropmail.User.me(function(err, user){
-      if (err) return console.log(err);
-      self.handleUserChange(user);
-    });
-  },
 });
 

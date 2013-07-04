@@ -10,6 +10,6 @@ AuthAction = React.createClass({
       return <a href='#' onClick={this.signOut}>Sign Out</a>;
     }
 
-    return <a href='/sign_in'>Sign In</a>;
+    return <a href='/#/sign_in'>Sign In</a>;
   }
 });
