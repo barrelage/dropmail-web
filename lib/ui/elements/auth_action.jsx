@@ -2,6 +2,12 @@
 AuthAction = React.createClass({
   signOut: React.autoBind(function(){
     this.props.onUserChange(null);
+    app.router.navigate('#', { trigger: true });
+    return false;
+  }),
+
+  signIn: React.autoBind(function(){
+    app.router.navigate('#/sign_in', { trigger: true });
     return false;
   }),
 
@@ -10,6 +16,6 @@ AuthAction = React.createClass({
       return <a href='#' onClick={this.signOut}>Sign Out</a>;
     }
 
-    return <a href='/#/sign_in'>Sign In</a>;
+    return <a href='#' onClick={this.signIn}>Sign In</a>;
   }
 });
