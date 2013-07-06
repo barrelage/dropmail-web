@@ -5,15 +5,11 @@ Pages.SignIn = React.createClass({
   },
 
   handleSubmit: React.autoBind(function(){
-    var self = this;
+    var self = this
+      , $form = $(this.refs.form.getDOMNode());
 
-    app.client.authenticate({
-      username: $('input[name=email]').val().trim(),
-      password: $('input[name=password]').val().trim()
-    });
-
-    app.client.Authorization.save(function(err, auth){
-      if (err){ return self.setState({ errors: err }); }
+    app.client.Authorization.save($form, function(err, auth){
+      if (err) return self.setState({ errors: err });
 
       app.client.authenticate(auth);
       $.cookie('key', auth.get('key'));
@@ -37,17 +33,15 @@ Pages.SignIn = React.createClass({
         <div class='span4'>
           <AlertMessage text={this.state.errors.message} context='warning' />
 
-          <form action='post' class='signup' onSubmit={this.handleSubmit}>
+          <form action='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
             <FormField
-              name='email'
+              name='username'
               label='Email'
-              ref='email'
               placeholder='user@example.com'
               errors={errors.email} />
             <FormField
               label='Password'
               name='password'
-              ref='password'
               placeholder='••••••••'
               type='password'
               errors={errors.password} />

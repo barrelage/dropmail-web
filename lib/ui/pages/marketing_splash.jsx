@@ -6,17 +6,11 @@ Pages.MarketingSplash = React.createClass({
 
   handleSubmit: React.autoBind(function(){
     var self = this
-      , attributes = {}
-      , user;
+      , $form = $(this.refs.form.getDOMNode());
 
-    for (var name in this.refs){
-      var value = $(this.refs[name].getDOMNode()).find('input').val();
-      attributes[name] = value.trim();
-    }
-
-    user = new app.client.User(attributes);
-    user.save(function(err, user){
+    app.client.User.save($form, function(err, user){
       if (err) return self.setState({ errors: err.attributes });
+
       self.props.onUserChange(user);
 
       app.client.authenticate(user);
@@ -42,23 +36,20 @@ Pages.MarketingSplash = React.createClass({
         </div>
 
         <div class='span3'>
-          <form action='post' class='signup' onSubmit={this.handleSubmit}>
+          <form action='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
             <FormField
               label='Name'
               name='name'
-              ref='name'
               placeholder='First Last'
               errors={errors.name} />
             <FormField
               name='email'
               label='Email'
-              ref='email'
               placeholder='user@example.com'
               errors={errors.email} />
             <FormField
               label='Password'
               name='password'
-              ref='password'
               placeholder='••••••••'
               type='password'
               errors={errors.password} />
