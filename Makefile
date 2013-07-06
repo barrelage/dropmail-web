@@ -58,10 +58,10 @@ $(DROPMAIL_CSS): node_modules $(DROPMAIL_SRC_LES)
 # dependancies
 
 dropmail.js: submodules
-	@cd $(PWD)/dropmail.js && npm install
+	@cd $(PWD)/dropmail.js && npm -s install
 
 node_modules:
-	@npm install
+	@npm -s install
 
 submodules:
 	@git submodule update --init
