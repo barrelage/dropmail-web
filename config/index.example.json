@@ -1,0 +1,6 @@
+{
+  "dropmail": {
+    "baseURL": "http://0.0.0.0:9393"
+  , "credentials": { "key": "AG7aRpo4Yefplk0j6h2TAzuzMvMvoyIa2plFBFSyHoQ" }
+  }
+}

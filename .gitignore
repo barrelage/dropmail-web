@@ -1,2 +1,5 @@
+config/*.json
+!config/*.example.json
 node_modules
-public/js/dropmail*.js
+build/*
+!.gitkeep
