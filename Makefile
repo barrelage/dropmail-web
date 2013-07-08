@@ -1,14 +1,34 @@
 SHELL=/bin/bash
 MAKEFLAGS += --check-symlink-times
 
-DROPMAIL_SRC_JS  = $(shell find lib -name "*.js")
-DROPMAIL_SRC_JSX = $(shell find lib -name "*.jsx")
-DROPMAIL_SRC_LES = $(shell find less -name "*.less")
+# submodules
 
-DROPMAIL_LIB = public/js/dropmail.js
-DROPMAIL_WEB = public/js/dropmail-web.js
-DROPMAIL_UI  = public/js/dropmail-ui.js
-DROPMAIL_CSS = public/css/dropmail.css
+DM_API = vendor/dropmail-api
+DM_JS  = vendor/dropmail.js
+
+# sources
+
+SRC_UI  = $(shell find lib -name "*.jsx")
+SRC_WEB = $(shell find lib -name "*.js")
+SRC_LIB = $(PWD)/$(DM_JS)/build/dropmail.js
+SRC_VEN = $(shell find vendor/js -name "*.js")
+SRC_LES = $(shell find less -name "*.less")
+
+# targets
+
+APP     = build/js/app.js
+APP_UI  = build/js/app/ui.js
+APP_WEB = build/js/app/web.js
+LIB     = build/js/dropmail.js
+VEN     = build/js/vendor.js
+CSS     = build/css/app.css
+
+APP_MIN = $(APP:.js=.min.js)
+LIB_MIN = $(LIB:.js=.min.js)
+VEN_MIN = $(VEN:.js=.min.js)
+CSS_MIN = $(CSS:.css=.min.css)
+
+# helpers
 
 color-line  = \r\033[$(1)m$(2) \033[0m$(3)\033[K
 log-info    = echo -e "$(call color-line,90,   $(1),$(2))"
@@ -16,13 +36,13 @@ log-success = echo -e "$(call color-line,92,✔  $(1),$(2))"
 
 default: install build
 
-install: dropmail.js node_modules
+install: node_modules submodules
 
 update: install
 	@git submodule foreach git checkout master >/dev/null 2>&1
 	@git submodule foreach git pull origin master
 
-build: $(DROPMAIL_LIB) $(DROPMAIL_UI) $(DROPMAIL_WEB) $(DROPMAIL_CSS)
+build: $(APP_MIN) $(LIB_MIN) $(VEN_MIN) $(CSS)
 
 quiet: build
 	@echo > /dev/null
@@ -37,31 +57,47 @@ watch:
 	done
 
 clean:
-	@cd $(PWD)/dropmail.js && make clean
-	rm -f $(DROPMAIL_LIB) $(DROPMAIL_WEB) $(DROPMAIL_UI) $(DROPMAIL_CSS)
+	@cd $(DM_JS) && make clean
+	@rm -f $(shell find build -name "*.css" -o -name "*.js")
 
-# resources
+# targets
 
-$(DROPMAIL_LIB): dropmail.js
-	@cd $(PWD)/dropmail.js && make
-	@ln -fnsv $(PWD)/dropmail.js/build/dropmail.debug.js $(PWD)/public/js/dropmail.js
+$(APP_MIN): $(APP)
+	@./node_modules/.bin/uglifyjs $^ > $@
 
-$(DROPMAIL_WEB): node_modules $(DROPMAIL_SRC_JS)
-	@cat $(DROPMAIL_SRC_JS) > $(DROPMAIL_WEB)
+$(APP): $(APP_LIB) $(APP_UI) $(APP_WEB)
+	@cat $^ > $@
 
-$(DROPMAIL_UI): node_modules $(DROPMAIL_SRC_JSX)
-	@cat $(DROPMAIL_SRC_JSX) | ./node_modules/.bin/jsx > $(DROPMAIL_UI)
+$(APP_UI): $(SRC_UI)
+	@cat $^ | ./node_modules/.bin/jsx > $@
 
-$(DROPMAIL_CSS): node_modules $(DROPMAIL_SRC_LES)
-	./node_modules/.bin/lessc less/dropmail.less > $(DROPMAIL_CSS)
+$(APP_WEB): $(SRC_WEB)
+	@cat $^ > $@
+
+$(VEN_MIN): $(VEN)
+	@./node_modules/.bin/uglifyjs $^ > $@
+
+$(VEN): $(SRC_VEN)
+	@cat $^ > $@
+
+$(LIB_MIN): $(LIB)
+	@./node_modules/.bin/uglifyjs $^ > $@
+
+$(LIB): $(SRC_LIB)
+	@ln -fns $(SRC_LIB) $@
+
+$(CSS): $(SRC_LES)
+	@./node_modules/.bin/lessc less/dropmail.less > $@
 
 # dependancies
 
-dropmail.js: submodules
-	@cd $(PWD)/dropmail.js && npm -s install
+$(SRC_LIB):
+	@cd $(DM_JS) && make quiet
 
 node_modules:
 	@npm -s install
 
 submodules:
 	@git submodule update --init
+	@cd $(DM_API) && bundle --quiet
+	@cd $(DM_JS) && make install
