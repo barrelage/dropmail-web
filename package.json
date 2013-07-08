@@ -4,16 +4,22 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "react-tools": "*"
+      "ejs": "*"
+    , "express": "*"
     }
   , "scripts": {
       "install": "make"
+    , "start": "nf start"
     }
   , "repository": {
         "type": "git"
-      , "url": "https://github.com/kainosnoema/dropmail-web.git"
+      , "url": "https://github.com/barrelage/dropmail-web.git"
     }
   , "devDependencies": {
       "less": ">= 1.4"
+    , "foreman": "git://github.com/kainosnoema/node-foreman.git#simplify-envs"
+    , "react-tools": "*"
+    , "supervisor": "*"
+    , "uglify-js": "*"
   }
 }
