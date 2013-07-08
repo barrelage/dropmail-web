@@ -29,7 +29,6 @@ Pages.SignIn = React.createClass({
     return (
       <div class='row'>
         <div class='span4'></div>
-
         <div class='span4'>
           <AlertMessage text={this.state.errors.message} context='warning' />
 

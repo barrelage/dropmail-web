@@ -25,7 +25,7 @@ App = React.createClass({
               </ul>
             </div>
             <div class='header-logo'>
-              <a href='/'>Dropmail</a>
+              <a href='/' onClick={this.goHome}>Dropmail</a>
             </div>
           </div>
         </div>
@@ -34,6 +34,11 @@ App = React.createClass({
       </div>
     );
   },
+
+  goHome: React.autoBind(function() {
+    app.router.navigate('/', { trigger: true });
+    return false;
+  }),
 
   signIn: React.autoBind(function(credentials){
     app.client.authenticate(credentials);
