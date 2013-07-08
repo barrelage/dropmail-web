@@ -89,15 +89,15 @@ $(LIB): $(SRC_LIB)
 $(CSS): $(SRC_LES)
 	@./node_modules/.bin/lessc less/dropmail.less > $@
 
-# dependancies
+# dependencies
 
 $(SRC_LIB):
 	@cd $(DM_JS) && make quiet
 
 node_modules:
-	@npm -s install
+	@npm install
 
 submodules:
 	@git submodule update --init
-	@cd $(DM_API) && bundle --quiet
+	@cd $(DM_API) && bundle
 	@cd $(DM_JS) && make install
