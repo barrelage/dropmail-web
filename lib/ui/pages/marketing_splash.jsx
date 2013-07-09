@@ -11,14 +11,9 @@ Pages.MarketingSplash = React.createClass({
     app.client.User.save($form, function(err, user){
       if (err) return self.setState({ errors: err.attributes });
 
-      self.props.onUserChange(user);
-
-      app.client.authenticate(user);
-      app.client.Authorization.save(function(err, auth){
-        if (err) console.log(err); /* TODO: handle errors */
-
-        app.client.authenticate(auth);
-        $.cookie('key', auth.get('key'));
+      app.client.startSession(user, function(err, user){
+        if (err) console.error(err); /* TODO: handle errors */
+        self.props.onUserChange(user);
       });
     });
 
