@@ -13,10 +13,24 @@ AuthAction = React.createClass({
   }),
 
   render: function(){
-    if (this.props.user){
-      return <a href='/' onClick={this.signOut}>Sign Out</a>;
+    var welcome
+      , actionLink = <a href='/sign_in' onClick={this.signIn}>Sign In</a>;
+
+    if (this.props.user) {
+      welcome = (
+        <span class='welcome'>
+          { this.props.user.get('name') } ({ this.props.user.get('email') })
+        </span>
+      );
+
+      actionLink = <a href='/' onClick={this.signOut}>Sign Out</a>;
     }
 
-    return <a href='/sign_in' onClick={this.signIn}>Sign In</a>;
+    return (
+      <ul class='nav pull-right actions'>
+        <li>{ welcome }</li>
+        <li>{ actionLink }</li>
+      </ul>
+    );
   }
 });
