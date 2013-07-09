@@ -1,7 +1,8 @@
 /** @jsx React.DOM */
 AuthAction = React.createClass({
   signOut: React.autoBind(function(){
-    this.props.onUserChange(null);
+    app.client.endSession();
+    this.props.onUserChange();
     app.router.navigate('/', { trigger: true });
     return false;
   }),
