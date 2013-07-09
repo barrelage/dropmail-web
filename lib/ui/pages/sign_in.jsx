@@ -8,16 +8,11 @@ Pages.SignIn = React.createClass({
     var self = this
       , $form = $(this.refs.form.getDOMNode());
 
-    app.client.Authorization.save($form, function(err, auth){
+    app.client.startSession($form, function(err, user){
       if (err) return self.setState({ errors: err });
 
-      app.client.authenticate(auth);
-      $.cookie('key', auth.get('key'));
-
-      app.client.loadCurrentUser(function(user){
-        self.props.onUserChange(user);
-        app.router.navigate('/', { trigger: true });
-      });
+      self.props.onUserChange(user);
+      app.router.navigate('/', { trigger: true });
     });
 
     return false;
@@ -34,7 +29,7 @@ Pages.SignIn = React.createClass({
 
           <form action='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
             <FormField
-              name='username'
+              name='email'
               label='Email'
               placeholder='user@example.com'
               errors={errors.email} />
