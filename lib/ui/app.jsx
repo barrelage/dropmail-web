@@ -18,11 +18,9 @@ App = React.createClass({
         <div class='row'>
           <div class='span12'>
             <div class='navbar'>
-              <ul class='nav pull-right actions'>
-                <li>
-                  <AuthAction user={this.state.user} onUserChange={this.handleUserChange} />
-                </li>
-              </ul>
+              <div class='navbar-inner'>
+                <AuthAction user={this.state.user} onUserChange={this.handleUserChange} />
+              </div>
             </div>
             <div class='header-logo'>
               <a href='/' onClick={this.goHome}>Dropmail</a>
