@@ -17,16 +17,13 @@ Pages.Index = React.createClass({
   }),
 
   render: function(){
-    var errors = this.state.errors;
-
     if (!this.props.user) return Pages.MarketingSplash(this.props);
-
-    function createOrganization(org){
-      return <li>{org.get('name')}</li>;
-    }
 
     return (
       <div class='row'>
+        <div class='span8'>
+          {this.listOrganizations()}
+        </div>
         <div class='span4'>
           <h3>Create an organization</h3>
           <form action='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
@@ -34,18 +31,35 @@ Pages.Index = React.createClass({
               label='Name'
               name='name'
               placeholder='Name'
-              errors={errors.name} />
+              errors={this.state.errors.name} />
             <FormSubmit label='Create Organization' />
           </form>
         </div>
-        <div class='span8'>
-          <h3>Current Organizations</h3>
-          <ul>
-            {this.props.organizations.map(createOrganization)}
-          </ul>
+      </div>
+    );
+  },
+
+  listOrganizations: function(){
+    var orgs = this.props.organizations;
+
+    if (!orgs.length) {
+      return (
+        <div>
+          <h3>Welcome to Dropmail</h3>
+          <div>To get started, create an organization.</div>
         </div>
+      );
+    }
+
+    function listOrganization(org){
+      return <li>{org.get('name')}</li>;
+    }
+
+    return (
+      <div>
+        <h3>Current Organizations</h3>
+        <ul>{orgs.map(listOrganization)}</ul>
       </div>
     );
   }
 });
-
