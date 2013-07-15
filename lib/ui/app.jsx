@@ -10,7 +10,10 @@ App = React.createClass({
       self.handleUserChange(user);
     });
 
-    return { user: app.client.authenticatedUser };
+    return {
+      user: app.client.authenticatedUser,
+      organizations: []
+    };
   },
 
   render: function(){
@@ -29,7 +32,11 @@ App = React.createClass({
           </div>
         </div>
 
-        {this.props.component({ user: this.state.user, onUserChange: this.handleUserChange })}
+        {this.props.component({
+          user: this.state.user,
+          organizations: this.state.organizations,
+          onUserChange: this.handleUserChange
+        })}
       </div>
     );
   },
@@ -40,7 +47,19 @@ App = React.createClass({
   }),
 
   handleUserChange: React.autoBind(function(user){
+    var self = this;
+
     this.setState({ user: user });
+
+    if (user) {
+      app.client.Organization.fetch(function(err, orgs){
+        if (err) console.log(err);
+        self.setState({ organizations: orgs });
+      });
+    } else {
+      self.setState({ organizations: [] });
+    }
+
     return false;
   })
 
