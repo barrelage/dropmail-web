@@ -1,3 +1,4 @@
+
 /** @jsx React.DOM */
 Pages = {};
 
@@ -44,4 +45,3 @@ App = React.createClass({
   })
 
 });
-
