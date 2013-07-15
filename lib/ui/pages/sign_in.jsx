@@ -30,6 +30,7 @@ Pages.SignIn = React.createClass({
             <FormField
               name='email'
               label='Email'
+              type='email'
               placeholder='user@example.com'
               errors={errors.email} />
             <FormField
