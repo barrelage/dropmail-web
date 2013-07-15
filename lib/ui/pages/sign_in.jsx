@@ -23,11 +23,10 @@ Pages.SignIn = React.createClass({
 
     return (
       <div class='row'>
-        <div class='span4'></div>
-        <div class='span4'>
+        <div class='offset4 span4'>
           <AlertMessage text={this.state.errors.message} context='warning' />
 
-          <form action='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
+          <form action='post' ref='form' class='signin' onSubmit={this.handleSubmit}>
             <FormField
               name='email'
               label='Email'
@@ -42,8 +41,6 @@ Pages.SignIn = React.createClass({
             <FormSubmit label='Sign In' />
           </form>
         </div>
-
-        <div class='span4'></div>
       </div>
     );
   }
