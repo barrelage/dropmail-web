@@ -1,23 +1,8 @@
 /** @jsx React.DOM */
 Pages.MarketingSplash = React.createClass({
+
   getInitialState: function(){
     return { errors: {} };
-  },
-
-  handleSubmit: function(){
-    var self = this
-      , $form = $(this.refs.form.getDOMNode());
-
-    app.client.User.save($form, function(err, user){
-      if (err) return self.setState({ errors: err.attributes });
-
-      app.client.startSession(user, function(err, user){
-        if (err) console.error(err); /* TODO: handle errors */
-        self.props.onUserChange(user);
-      });
-    });
-
-    return false;
   },
 
   render: function(){
@@ -31,7 +16,7 @@ Pages.MarketingSplash = React.createClass({
         </div>
 
         <div class='span3'>
-          <form action='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
+          <form method='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
             <FormField
               label='Name'
               name='name'
@@ -54,5 +39,22 @@ Pages.MarketingSplash = React.createClass({
         </div>
       </div>
     );
+  },
+
+  handleSubmit: function(){
+    var self = this
+      , $form = $(this.refs.form.getDOMNode());
+
+    app.client.User.save($form, function(err, user){
+      if (err) return self.setState({ errors: err.attributes });
+
+      app.client.startSession(user, function(err, user){
+        if (err) console.error(err); /* TODO: handle errors */
+        self.props.onUserChange(user);
+      });
+    });
+
+    return false;
   }
+
 });

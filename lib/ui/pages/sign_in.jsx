@@ -1,24 +1,13 @@
 /** @jsx React.DOM */
 Pages.SignIn = React.createClass({
+
   getInitialState: function(){
     return { errors: {} };
   },
 
-  handleSubmit: function(){
-    var self = this
-      , $form = $(this.refs.form.getDOMNode());
-
-    app.client.startSession($form, function(err, user){
-      if (err) return self.setState({ errors: err });
-
-      self.props.onUserChange(user);
-      app.router.navigate('/', { trigger: true });
-    });
-
-    return false;
-  },
-
   render: function(){
+    if (this.props.user) return app.router.requireNoUser();
+
     var errors = this.state.errors.attributes || {};
 
     return (
@@ -26,7 +15,7 @@ Pages.SignIn = React.createClass({
         <div class='offset4 span4'>
           <AlertMessage text={this.state.errors.message} context='warning' />
 
-          <form action='post' ref='form' class='signin' onSubmit={this.handleSubmit}>
+          <form method='post' ref='form' class='signin' onSubmit={this.handleSubmit}>
             <FormField
               name='email'
               label='Email'
@@ -44,5 +33,23 @@ Pages.SignIn = React.createClass({
         </div>
       </div>
     );
+  },
+
+  handleSubmit: function(){
+    var self = this
+      , $form = $(this.refs.form.getDOMNode());
+
+    app.client.startSession($form, function(err, user){
+      if (err) return self.setState({ errors: err });
+
+      self.props.onUserChange(user);
+
+      var navigateTo = app.client.cookies('return_to') || '/';
+      app.client.cookies.expire('return_to');
+      app.router.navigate(navigateTo, { trigger: true });
+    });
+
+    return false;
   }
+
 });

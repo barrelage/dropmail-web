@@ -2,6 +2,7 @@
 Pages = {};
 
 App = React.createClass({
+
   getInitialState: function(){
     var self = this;
 
@@ -60,19 +61,15 @@ App = React.createClass({
   handleUserChange: function(user){
     var self = this;
 
-    this.setState({ user: user });
-
     if (user) {
       app.client.Organization.fetch(function(err, orgs){
         if (err) console.error(err);
-        self.setState({ organizations: orgs });
-
-        if (orgs.length){
-          self.setState({ organization: orgs[0] });
-        }
+        self.setState({
+          user: user, organization: orgs[0], organizations: orgs
+        });
       });
     } else {
-      self.setState({ organizations: [], organization: null });
+      self.setState({ user: null, organizations: [], organization: null });
     }
 
     return false;
