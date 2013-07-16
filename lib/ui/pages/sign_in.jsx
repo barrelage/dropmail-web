@@ -4,7 +4,7 @@ Pages.SignIn = React.createClass({
     return { errors: {} };
   },
 
-  handleSubmit: React.autoBind(function(){
+  handleSubmit: function(){
     var self = this
       , $form = $(this.refs.form.getDOMNode());
 
@@ -16,7 +16,7 @@ Pages.SignIn = React.createClass({
     });
 
     return false;
-  }),
+  },
 
   render: function(){
     var errors = this.state.errors.attributes || {};

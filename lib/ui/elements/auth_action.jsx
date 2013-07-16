@@ -1,16 +1,16 @@
 /** @jsx React.DOM */
 AuthAction = React.createClass({
-  signOut: React.autoBind(function(){
+  signOut: function(){
     app.client.endSession();
     this.props.onUserChange();
     app.router.navigate('/', { trigger: true });
     return false;
-  }),
+  },
 
-  signIn: React.autoBind(function(){
+  signIn: function(){
     app.router.navigate('/sign_in', { trigger: true });
     return false;
-  }),
+  },
 
   render: function(){
     var welcome

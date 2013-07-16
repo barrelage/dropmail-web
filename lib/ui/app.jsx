@@ -41,12 +41,12 @@ App = React.createClass({
     );
   },
 
-  goHome: React.autoBind(function() {
+  goHome: function() {
     app.router.navigate('/', { trigger: true });
     return false;
-  }),
+  },
 
-  handleUserChange: React.autoBind(function(user){
+  handleUserChange: function(user){
     var self = this;
 
     this.setState({ user: user });
@@ -61,6 +61,6 @@ App = React.createClass({
     }
 
     return false;
-  })
+  }
 
 });

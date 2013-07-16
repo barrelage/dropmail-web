@@ -4,7 +4,7 @@ Pages.Index = React.createClass({
     return { errors: {} };
   },
 
-  handleSubmit: React.autoBind(function(){
+  handleSubmit: function(){
     var self = this
       , $form = $(this.refs.form.getDOMNode());
 
@@ -14,7 +14,7 @@ Pages.Index = React.createClass({
     });
 
     return false;
-  }),
+  },
 
   render: function(){
     if (!this.props.user) return Pages.MarketingSplash(this.props);
