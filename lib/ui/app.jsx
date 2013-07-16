@@ -1,4 +1,3 @@
-
 /** @jsx React.DOM */
 Pages = {};
 
@@ -12,6 +11,7 @@ App = React.createClass({
 
     return {
       user: app.client.authenticatedUser,
+      organization: null,
       organizations: []
     };
   },
@@ -23,20 +23,31 @@ App = React.createClass({
           <div class='span12'>
             <div class='navbar'>
               <div class='navbar-inner'>
-                <AuthAction user={this.state.user} onUserChange={this.handleUserChange} />
+                <div class='container'>
+                  <a href='/' class='brand' onClick={this.goHome}>Dropmail</a>
+                  <div class='nav-collapse collapse'>
+                    <NavActions 
+                      user={this.state.user}
+                      organization={this.state.organization}
+                      organizations={this.state.organizations}
+                      onUserChange={this.handleUserChange}
+                      onOrgChange={this.handleOrgChange} />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class='header-logo'>
-              <a href='/' onClick={this.goHome}>Dropmail</a>
             </div>
           </div>
         </div>
 
-        {this.props.component({
-          user: this.state.user,
-          organizations: this.state.organizations,
-          onUserChange: this.handleUserChange
-        })}
+        {
+          this.props.component({
+            user: this.state.user,
+            organization: this.state.organization,
+            organizations: this.state.organizations,
+            onUserChange: this.handleUserChange,
+            onOrgChange: this.handleOrgChange
+          })
+        }
       </div>
     );
   },
@@ -55,11 +66,20 @@ App = React.createClass({
       app.client.Organization.fetch(function(err, orgs){
         if (err) console.log(err);
         self.setState({ organizations: orgs });
+
+        if (orgs.length){
+          self.setState({ organization: orgs[0] });
+        }
       });
     } else {
       self.setState({ organizations: [] });
     }
 
+    return false;
+  },
+
+  handleOrgChange: function(org){
+    this.setState({ organization: org });
     return false;
   }
 
