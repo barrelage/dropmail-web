@@ -51,14 +51,12 @@ Pages.Index = React.createClass({
       );
     }
 
-    function listOrganization(org){
-      return <li>{org.get('name')}</li>;
-    }
-
     return (
       <div>
         <h3>Current Organizations</h3>
-        <ul>{orgs.map(listOrganization)}</ul>
+        <OrganizationList
+          organizations={orgs}
+          onOrgChange={this.props.onOrgChange} />
       </div>
     );
   }
