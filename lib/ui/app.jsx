@@ -2,17 +2,14 @@
 Pages = {};
 
 App = React.createClass({
-
   getInitialState: function(){
     var self = this;
 
-    app.client.startSession(function(err, user) {
-      self.handleUserChange(user);
-    });
+    app.client.on('change:session', this.handleSessionChange.bind(this));
+    app.client.startSession();
 
     return {
-      user: app.client.authenticatedUser,
-      organization: null,
+      session: app.client.session,
       organizations: []
     };
   },
@@ -28,11 +25,8 @@ App = React.createClass({
                   <a href='/' class='brand' onClick={this.goHome}>Dropmail</a>
                   <div class='nav-collapse collapse'>
                     <NavActions
-                      user={this.state.user}
-                      organization={this.state.organization}
-                      organizations={this.state.organizations}
-                      onUserChange={this.handleUserChange}
-                      onOrgChange={this.handleOrgChange} />
+                      session={this.state.session}
+                      organizations={this.state.organizations} />
                   </div>
                 </div>
               </div>
@@ -42,11 +36,8 @@ App = React.createClass({
 
         {
           this.props.component({
-            user: this.state.user,
-            organization: this.state.organization,
-            organizations: this.state.organizations,
-            onUserChange: this.handleUserChange,
-            onOrgChange: this.handleOrgChange
+            session: this.state.session,
+            organizations: this.state.organizations
           })
         }
       </div>
@@ -60,28 +51,18 @@ App = React.createClass({
     return false;
   },
 
-  handleUserChange: function(user){
-    var self = this;
+  handleSessionChange: function(session){
+    if (session) {
+      if (this.state && this.state.session == session) { return false; }
 
-    if (user) {
+      var self = this;
       app.client.Organization.fetch(function(err, orgs){
         if (err) console.error(err);
-        self.setState({
-          user: user, organizations: orgs, organization: orgs[0]
-        });
+        self.setState({ session: session, organizations: orgs });
       });
     } else {
-      self.setState({ user: null, organizations: [], organization: null });
+      this.setState({ session: null, organizations: [] });
     }
-
-    return false;
-  },
-
-  handleOrgChange: function(org){
-    var orgs = this.state.organizations;
-
-    if (orgs.indexOf(org) < 0) orgs.push(org);
-    this.setState({ organizations: orgs, organization: org });
 
     return false;
   }

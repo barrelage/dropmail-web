@@ -6,7 +6,7 @@ Pages.Organizations = React.createClass({
   },
 
   render: function(){
-    if (!this.props.user) return app.requireUser();
+    if (!this.props.session) return app.requireSession();
 
     return (
       <div class='row'>
@@ -36,7 +36,7 @@ Pages.Organizations = React.createClass({
 
     app.client.Organization.save($form, function(err, org){
       if (err) return self.setState({ errors: err.attributes });
-      self.props.onOrgChange(org);
+      app.client.createSession({ organization_id: org.get('id') });
     });
 
     return false;
@@ -57,9 +57,7 @@ Pages.Organizations = React.createClass({
     return (
       <div>
         <h3>Current Organizations</h3>
-        <OrganizationList
-          organizations={orgs}
-          onOrgChange={this.props.onOrgChange} />
+        <OrganizationList organizations={orgs} />
       </div>
     );
   }

@@ -4,8 +4,8 @@ OrganizationList = React.createClass({
     organizations: React.PropTypes.array
   },
 
-  getDefaultProps: function(){ 
-    return { organizations: [] }; 
+  getDefaultProps: function(){
+    return { organizations: [] };
   },
 
   render: function(){
@@ -29,7 +29,7 @@ OrganizationList = React.createClass({
   },
 
   changeOrg: function(org){
-    this.props.onOrgChange(org);
+    app.client.createSession({ organization_id: org.get('id') });
     return false;
   }
 });

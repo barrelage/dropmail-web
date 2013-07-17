@@ -6,7 +6,7 @@ Pages.SignIn = React.createClass({
   },
 
   render: function(){
-    if (this.props.user) return app.requireNoUser();
+    if (this.props.session) return app.requireNoSession();
 
     var errors = this.state.errors.attributes || {};
 
@@ -41,10 +41,8 @@ Pages.SignIn = React.createClass({
     var self = this
       , $form = $(this.refs.form.getDOMNode());
 
-    app.client.startSession($form, function(err, user){
+    app.client.startSession($form, function(err){
       if (err) return self.setState({ errors: err });
-
-      self.props.onUserChange(user);
       app.router.navigate('/', { trigger: true });
     });
 
