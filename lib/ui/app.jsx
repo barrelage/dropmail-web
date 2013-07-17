@@ -65,11 +65,7 @@ App = React.createClass({
     if (user) {
       app.client.Organization.fetch(function(err, orgs){
         if (err) console.error(err);
-        self.setState({ organizations: orgs });
-
-        if (orgs.length){
-          self.setState({ organization: orgs[0] });
-        }
+        self.setState({ organizations: orgs, organization: orgs[0] });
       });
     } else {
       self.setState({ organizations: [], organization: null });
@@ -81,12 +77,8 @@ App = React.createClass({
   handleOrgChange: function(org){
     var orgs = this.state.organizations;
 
-    this.setState({ organization: org });
-
-    if (!orgs.indexOf(org) >= 0){
-      orgs.push(org);
-      this.setState({ organizations: orgs });
-    }
+    if (!orgs.indexOf(org) >= 0) orgs.push(org);
+    this.setState({ organizations: orgs, organization: org });
 
     return false;
   }
