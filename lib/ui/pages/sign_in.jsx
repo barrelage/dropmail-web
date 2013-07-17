@@ -1,21 +1,8 @@
 /** @jsx React.DOM */
 Pages.SignIn = React.createClass({
+
   getInitialState: function(){
     return { errors: {} };
-  },
-
-  handleSubmit: function(){
-    var self = this
-      , $form = $(this.refs.form.getDOMNode());
-
-    app.client.startSession($form, function(err, user){
-      if (err) return self.setState({ errors: err });
-
-      self.props.onUserChange(user);
-      app.router.navigate('/', { trigger: true });
-    });
-
-    return false;
   },
 
   render: function(){
@@ -44,5 +31,22 @@ Pages.SignIn = React.createClass({
         </div>
       </div>
     );
+  },
+
+  // private
+
+  handleSubmit: function(){
+    var self = this
+      , $form = $(this.refs.form.getDOMNode());
+
+    app.client.startSession($form, function(err, user){
+      if (err) return self.setState({ errors: err });
+
+      self.props.onUserChange(user);
+      app.router.navigate('/', { trigger: true });
+    });
+
+    return false;
   }
+
 });

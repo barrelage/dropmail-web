@@ -1,19 +1,8 @@
 /** @jsx React.DOM */
 Pages.Index = React.createClass({
+
   getInitialState: function(){
     return { errors: {} };
-  },
-
-  handleSubmit: function(){
-    var self = this
-      , $form = $(this.refs.form.getDOMNode());
-
-    app.client.Organization.save($form, function(err, org){
-      if (err) return self.setState({ errors: err.attributes });
-      self.props.onOrgChange(org);
-    });
-
-    return false;
   },
 
   render: function(){
@@ -39,6 +28,20 @@ Pages.Index = React.createClass({
     );
   },
 
+  // private
+
+  handleSubmit: function(){
+    var self = this
+      , $form = $(this.refs.form.getDOMNode());
+
+    app.client.Organization.save($form, function(err, org){
+      if (err) return self.setState({ errors: err.attributes });
+      self.props.onOrgChange(org);
+    });
+
+    return false;
+  },
+
   listOrganizations: function(){
     var orgs = this.props.organizations;
 
@@ -60,4 +63,5 @@ Pages.Index = React.createClass({
       </div>
     );
   }
+
 });

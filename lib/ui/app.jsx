@@ -2,6 +2,7 @@
 Pages = {};
 
 App = React.createClass({
+
   getInitialState: function(){
     var self = this;
 
@@ -51,6 +52,8 @@ App = React.createClass({
       </div>
     );
   },
+
+  // private
 
   goHome: function() {
     app.router.navigate('/', { trigger: true });
