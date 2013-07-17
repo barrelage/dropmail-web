@@ -13,7 +13,7 @@ Pages.SignIn = React.createClass({
         <div class='offset4 span4'>
           <AlertMessage text={this.state.errors.message} context='warning' />
 
-          <form action='post' ref='form' class='signin' onSubmit={this.handleSubmit}>
+          <form method='post' ref='form' class='signin' onSubmit={this.handleSubmit}>
             <FormField
               name='email'
               label='Email'

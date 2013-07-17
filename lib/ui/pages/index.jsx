@@ -15,7 +15,7 @@ Pages.Index = React.createClass({
         </div>
         <div class='span4'>
           <h3>Create an organization</h3>
-          <form action='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
+          <form method='post' ref='form' class='signup' onSubmit={this.handleSubmit}>
             <FormField
               label='Name'
               name='name'
