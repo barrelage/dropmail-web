@@ -27,7 +27,7 @@ App = React.createClass({
                 <div class='container'>
                   <a href='/' class='brand' onClick={this.goHome}>Dropmail</a>
                   <div class='nav-collapse collapse'>
-                    <NavActions 
+                    <NavActions
                       user={this.state.user}
                       organization={this.state.organization}
                       organizations={this.state.organizations}
