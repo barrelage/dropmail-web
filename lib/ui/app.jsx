@@ -63,15 +63,15 @@ App = React.createClass({
   handleUserChange: function(user){
     var self = this;
 
-    this.setState({ user: user });
-
     if (user) {
       app.client.Organization.fetch(function(err, orgs){
         if (err) console.error(err);
-        self.setState({ organizations: orgs, organization: orgs[0] });
+        self.setState({
+          user: user, organizations: orgs, organization: orgs[0]
+        });
       });
     } else {
-      self.setState({ organizations: [], organization: null });
+      self.setState({ user: null, organizations: [], organization: null });
     }
 
     return false;
