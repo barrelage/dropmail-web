@@ -25,8 +25,8 @@ Pages.MarketingSplash = React.createClass({
             <FormField
               name='email'
               label='Email'
-              type='email'
               placeholder='user@example.com'
+              type='email'
               errors={errors.email} />
             <FormField
               label='Password'
