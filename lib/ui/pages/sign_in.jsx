@@ -6,6 +6,8 @@ Pages.SignIn = React.createClass({
   },
 
   render: function(){
+    if (this.props.user) return app.requireNoUser();
+
     var errors = this.state.errors.attributes || {};
 
     return (
