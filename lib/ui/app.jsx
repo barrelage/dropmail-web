@@ -72,7 +72,7 @@ App = React.createClass({
         }
       });
     } else {
-      self.setState({ organizations: [] });
+      self.setState({ organizations: [], organization: null });
     }
 
     return false;
