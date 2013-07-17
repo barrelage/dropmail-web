@@ -77,7 +77,7 @@ App = React.createClass({
   handleOrgChange: function(org){
     var orgs = this.state.organizations;
 
-    if (!orgs.indexOf(org) >= 0) orgs.push(org);
+    if (orgs.indexOf(org) < 0) orgs.push(org);
     this.setState({ organizations: orgs, organization: org });
 
     return false;
