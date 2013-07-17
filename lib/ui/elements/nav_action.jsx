@@ -5,29 +5,31 @@ NavActions = React.createClass({
       <li><a href='/sign_in' onClick={this.signIn}>Sign In</a></li>
     ];
 
-    if (this.props.user){
+    if (this.props.session){
+      var user = this.props.session.get('user')
+        , organization = this.props.session.get('organization');
+
       actions = [
         <li>
-          <span class='welcome'>Welcome, {this.props.user.get('name')}</span>
+          <span class='welcome'>Welcome, {user.get('name')}</span>
         </li>,
         <li><a href='/' onClick={this.signOut}>Sign Out</a></li>
       ];
-    }
 
-    if (this.props.organization){
-      actions.unshift(
-        <li class='dropdown'>
-          <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
-            {this.props.organization.get('name')}
-            <b class='caret'></b>
-          </a>
+      if (organization){
+        actions.unshift(
+          <li class='dropdown'>
+            <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
+              {organization.get('name')}
+              <b class='caret'></b>
+            </a>
 
-          <OrganizationList
-            class='dropdown-menu'
-            organizations={this.props.organizations}
-            onOrgChange={this.props.onOrgChange}/>
-        </li>
-      );
+            <OrganizationList
+              class='dropdown-menu'
+              organizations={this.props.organizations} />
+          </li>
+        );
+      }
     }
 
     return (
@@ -37,7 +39,6 @@ NavActions = React.createClass({
 
   signOut: function(){
     app.client.endSession();
-    this.props.onUserChange();
     app.router.navigate('/', { trigger: true });
     return false;
   },
