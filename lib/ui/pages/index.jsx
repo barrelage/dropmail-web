@@ -10,7 +10,7 @@ Pages.Index = React.createClass({
 
     app.client.Organization.save($form, function(err, org){
       if (err) return self.setState({ errors: err.attributes });
-      self.props.onUserChange(self.props.user);
+      self.props.onOrgChange(org);
     });
 
     return false;

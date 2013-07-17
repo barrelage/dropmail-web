@@ -79,7 +79,15 @@ App = React.createClass({
   },
 
   handleOrgChange: function(org){
+    var orgs = this.state.organizations;
+
     this.setState({ organization: org });
+
+    if (!orgs.indexOf(org) >= 0){
+      orgs.push(org);
+      this.setState({ organizations: orgs });
+    }
+
     return false;
   }
 
