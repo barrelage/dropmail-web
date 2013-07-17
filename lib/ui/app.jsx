@@ -64,7 +64,7 @@ App = React.createClass({
 
     if (user) {
       app.client.Organization.fetch(function(err, orgs){
-        if (err) console.log(err);
+        if (err) console.error(err);
         self.setState({ organizations: orgs });
 
         if (orgs.length){
