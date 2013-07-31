@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-Pages = {};
+Views = {};
 
 App = React.createClass({
   getDefaultProps: function(){

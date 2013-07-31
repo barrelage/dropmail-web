@@ -1,14 +1,14 @@
 /** @jsx React.DOM */
-Pages.Index = React.createClass({
+Views.Index = React.createClass({
 
   getInitialState: function(){
     return { errors: {} };
   },
 
   render: function(){
-    if (!this.props.session) return Pages.MarketingSplash(this.props);
+    if (!this.props.session) return Views.MarketingSplash(this.props);
 
-    return Pages.Organizations(this.props);
+    return Views.Organizations(this.props);
   }
 
 });

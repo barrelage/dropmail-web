@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-Pages.Templates = React.createClass({
+Views.Templates = React.createClass({
 
   getInitialState: function(){
     this.reloadTemplates();
