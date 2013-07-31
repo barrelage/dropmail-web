@@ -10,7 +10,9 @@ Views.Organizations = React.createClass({
 
     return (
       <div class='row'>
-        <div class='span8'>
+        <NavigationColumn current='organizations' />
+
+        <div class='span6'>
           {this.listOrganizations()}
         </div>
         <div class='span4'>
