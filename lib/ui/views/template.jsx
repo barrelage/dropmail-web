@@ -9,7 +9,13 @@ Views.Template = React.createClass({
 
   render: function(){
     return (
-      <div>foo</div>
+      <div class='row'>
+        <NavigationColumn current='organizations' />
+
+        <div class='span10'>
+          Hi
+        </div>
+      </div>
     );
   },
 
