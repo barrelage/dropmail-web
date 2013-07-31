@@ -1,6 +1,6 @@
 [submodule "vendor/bootstrap"]
   path = vendor/bootstrap
-  url = git@github.com:twitter/bootstrap.git
+  url = git@github.com:twbs/bootstrap.git
 [submodule "vendor/dropmail.js"]
   path = vendor/dropmail.js
   url = git@github.com:barrelage/dropmail.js.git
