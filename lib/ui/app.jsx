@@ -2,6 +2,10 @@
 Pages = {};
 
 App = React.createClass({
+  getDefaultProps: function(){
+    return { viewProps: {} };
+  },
+
   getInitialState: function(){
     var self = this;
 
@@ -35,10 +39,10 @@ App = React.createClass({
         </div>
 
         {
-          this.props.component({
+          this.props.view($.extend({
             session: this.state.session,
             organizations: this.state.organizations
-          })
+          }, this.props.viewProps))
         }
       </div>
     );
