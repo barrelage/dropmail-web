@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-Pages.MarketingSplash = React.createClass({
+Views.MarketingSplash = React.createClass({
 
   getInitialState: function(){
     return { errors: {} };

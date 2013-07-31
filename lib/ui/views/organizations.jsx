@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-Pages.Organizations = React.createClass({
+Views.Organizations = React.createClass({
 
   getInitialState: function(){
     return { errors: {} };

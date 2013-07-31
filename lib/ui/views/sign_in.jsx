@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-Pages.SignIn = React.createClass({
+Views.SignIn = React.createClass({
 
   getInitialState: function(){
     return { errors: {} };
