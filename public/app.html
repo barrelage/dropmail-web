@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Dropmail</title>
+    <link href='/css/app.css' rel='stylesheet'>
+  </head>
+
+  <body>
+    <div class='container' id='container'></div>
+    <script src='/js/vendor.js'></script>
+    <script src='/js/dropmail.js'></script>
+    <script src='/js/app/ui.js'></script>
+    <script src='/js/app/web.js'></script>
+    <script>
+      $(function(){
+        var web = new DropmailWeb({
+          baseURL: "http://0.0.0.0:9393", 
+          credentials: { "key": "AG7aRpo4Yefplk0j6h2TAzuzMvMvoyIa2plFBFSyHoQ" }
+        });
+        web.start();
+      });
+    </script>
+  </body>
+</html>
