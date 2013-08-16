@@ -21,6 +21,7 @@ App = React.createClass({
             </li>
             <li class='dropdown active'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                <span class='glyphicon glyphicon-user' />
                 {auth.get('user').get('name')}
               </a>
               <ul class='dropdown-menu'>
@@ -34,21 +35,34 @@ App = React.createClass({
             </li>
             <li class='dropdown'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                <span class='glyphicon glyphicon-heart' />
                 {auth.get('organization').get('name')}
               </a>
               <OrganizationList class='dropdown-menu' />
             </li>
             <li onClick={app.goTo.bind(this, 'templates')}>
-              <a href='#'>Templates</a>
+              <a href='#'>
+                <span class='glyphicon glyphicon-text-height' />
+                Templates
+              </a>
             </li>
             <li onClick={app.goTo.bind(this, 'emails')}>
-              <a href='#'>Emails</a>
+              <a href='#'>
+                <span class='glyphicon glyphicon-envelope' />
+                Emails
+              </a>
             </li>
             <li onClick={app.goTo.bind(this, 'members')}>
-              <a href='#'>Members</a>
+              <a href='#'>
+                <span class='glyphicon glyphicon-flag' />
+                Members
+              </a>
             </li>
             <li onClick={app.goTo.bind(this, 'domains')}>
-              <a href='#'>Domains</a>
+              <a href='#'>
+                <span class='glyphicon glyphicon-globe' />
+                Domains
+              </a>
             </li>
           </ul>
         </div>
