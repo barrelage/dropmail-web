@@ -1,1 +1,1 @@
-../bootstrap/js/bootstrap-dropdown.js
+../bootstrap/js/dropdown.js

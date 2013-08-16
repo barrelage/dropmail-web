@@ -2,7 +2,7 @@
 
 ## Setup
 
-Start development server (starts dropmail-api and express):
+Start development server (starts dropmail-api and nginx):
 ```sh
 npm start
 ```
