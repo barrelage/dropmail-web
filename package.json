@@ -3,10 +3,6 @@
   , "description": "The frontend powering the dropmail website."
   , "version": "0.0.1"
   , "private": true
-  , "dependencies": {
-      "ejs": "*"
-    , "express": "*"
-    }
   , "scripts": {
       "install": "make"
     , "start": "nf start"
@@ -18,7 +14,7 @@
   , "devDependencies": {
       "less": ">= 1.4"
     , "foreman": "git://github.com/kainosnoema/node-foreman.git#simplify-envs"
-    , "react-tools": "*"
+    , "react-tools": "0.3.3"
     , "supervisor": "*"
     , "uglify-js": "*"
   }

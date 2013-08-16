@@ -39,7 +39,6 @@ default: install build
 install: node_modules submodules
 
 update: install
-	@git submodule foreach git checkout master >/dev/null 2>&1
 	@git submodule foreach git pull origin master
 
 build: $(APP_MIN) $(LIB_MIN) $(VEN_MIN) $(CSS)
