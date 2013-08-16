@@ -25,13 +25,11 @@ TemplateForm = React.createClass({
 
   // private
 
- handleSubmit: function(){
+  handleSubmit: function(){
     var self = this
       , $form = $(this.refs.form.getDOMNode());
 
     app.client.Template.save($form, function(err, template){
-      var templates = self.state.templates;
-
       if (err) return self.setState({ errors: err.attributes });
       app.goTo('templates/' + template.get('slug'));
     });

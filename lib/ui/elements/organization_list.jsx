@@ -15,7 +15,7 @@ OrganizationList = React.createClass({
       if (currentOrg.get('id') === org.get('id')) return;
 
       return (
-        <li onClick={self.changeOrg.bind(this, org)}>
+        <li onClick={app.changeOrg.bind(this, org)}>
           <a href='#'>{org.get('name')}</a>
         </li>
       );
@@ -39,22 +39,6 @@ OrganizationList = React.createClass({
     if (typeof path != 'string') path = '';
 
     app.router.navigate('/' + path, { trigger: true });
-    return false;
-  },
-
-  changeOrg: function(org) {
-    var self = this
-      , options = { organization_id: org.get('id') };
-
-    app.client.createSession(options, function(err, auth) {
-      if (err) return console.error(err);
-
-      // go home incase this page is specific to the org
-      self.goTo();
-
-      window.location.reload();
-    });
-
     return false;
   },
 
