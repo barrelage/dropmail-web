@@ -11,7 +11,7 @@ FormSubmit = React.createClass({
 
 FormField = React.createClass({
   render: function(){
-    var groupClass = 'control-group'
+    var groupClass = 'form-group'
       , helpBlock;
 
     if (this.props.errors && this.props.errors.length){
@@ -23,11 +23,12 @@ FormField = React.createClass({
 
     return (
       <div class={groupClass}>
-        <label class='control-label' for={this.props.name}>
+        <label class='control-label col-lg-2' for={this.props.name}>
           {this.props.label}
         </label>
-        <div class='controls'>
+        <div class='col-lg-10'>
           <input
+            class='form-control'
             type={this.props.type || 'text'}
             name={this.props.name}
             placeholder={this.props.placeholder}

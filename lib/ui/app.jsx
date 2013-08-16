@@ -3,72 +3,80 @@ Views = {};
 
 App = React.createClass({
   getDefaultProps: function(){
-    return { viewProps: {} };
+    return { page: 'index' };
   },
 
   getInitialState: function(){
-    var self = this;
-
-    app.client.on('change:session', this.handleSessionChange.bind(this));
-    app.client.startSession();
-
-    return {
-      session: app.client.session,
-      organizations: []
-    };
   },
 
   render: function(){
+    var auth = app.authorization;
+
     return (
-      <div class='layout'>
-        <div class='row'>
-          <div class='span12'>
-            <div class='navbar'>
-              <div class='navbar-inner'>
-                <div class='container'>
-                  <a href='/' class='brand' onClick={this.goHome}>Dropmail</a>
-                  <div class='nav-collapse collapse'>
-                    <NavActions
-                      session={this.state.session}
-                      organizations={this.state.organizations} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div>
+        <div class='col-md-2'>
+          <ul class='nav nav-stacked'>
+            <li class='logo' onClick={app.goTo}>
+              <a href='#'>Dropmail</a>
+            </li>
+            <li class='dropdown active'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                {auth.get('user').get('name')}
+              </a>
+              <ul class='dropdown-menu'>
+                <li onClick={this.signOut}>
+                  <a href='#'>Logout</a>
+                </li>
+                <li onClick={app.goTo.bind(this, 'account')}>
+                  <a href='#'>Settings</a>
+                </li>
+              </ul>
+            </li>
+            <li class='dropdown'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                {auth.get('organization').get('name')}
+              </a>
+              <OrganizationList class='dropdown-menu' />
+            </li>
+            <li onClick={app.goTo.bind(this, 'templates')}>
+              <a href='#'>Templates</a>
+            </li>
+            <li onClick={app.goTo.bind(this, 'emails')}>
+              <a href='#'>Emails</a>
+            </li>
+            <li onClick={app.goTo.bind(this, 'members')}>
+              <a href='#'>Members</a>
+            </li>
+            <li onClick={app.goTo.bind(this, 'domains')}>
+              <a href='#'>Domains</a>
+            </li>
+          </ul>
         </div>
 
-        {
-          this.props.view($.extend({
-            session: this.state.session,
-            organizations: this.state.organizations
-          }, this.props.viewProps))
-        }
+        <div class='col-md-10'>
+          {this.renderPage()}
+        </div>
       </div>
     );
   },
 
   // private
 
-  goHome: function() {
-    app.router.navigate('/', { trigger: true });
-    return false;
+  renderPage: function() {
+    var pages = this.props.page.split('/');
+    pages.unshift('views');
+
+    return _.reduce(pages, function(scope, name){
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+
+      return scope[name];
+    }, window)(this.props.viewProps);
   },
 
-  handleSessionChange: function(session){
-    if (session) {
-      if (this.state && this.state.session == session) { return false; }
-
-      var self = this;
-      app.client.Organization.fetch(function(err, orgs){
-        if (err) console.error(err);
-        self.setState({ session: session, organizations: orgs });
-      });
-    } else {
-      this.setState({ session: null, organizations: [] });
-    }
-
+  signOut: function() {
+    console.log('TODO: Delete cookie and refresh page');
     return false;
   }
 
 });
+
