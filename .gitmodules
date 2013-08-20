@@ -7,6 +7,3 @@
 [submodule "vendor/dropmail-api"]
 	path = vendor/dropmail-api
 	url = git@github.com:barrelage/dropmail-api.git
-[submodule "vendor/bootstrap-glyphicons"]
-	path = vendor/bootstrap-glyphicons
-	url = https://github.com/twbs/bootstrap-glyphicons.git
