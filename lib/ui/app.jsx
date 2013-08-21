@@ -85,7 +85,8 @@ App = React.createClass({
   },
 
   signOut: function() {
-    console.log('TODO: Delete cookie and refresh page');
+    app.client.endSession();
+    window.location.reload();
     return false;
   }
 
