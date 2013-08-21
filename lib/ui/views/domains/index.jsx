@@ -1,7 +1,32 @@
 /** @jsx React.DOM */
 Views.Domains = React.createClass({
+
+  getInitialState: function() {
+    this.fetchDomains();
+    return { domains: null };
+  },
+
   render: function() {
-    return <h2>Domains List</h2>;
-  }
+    return (
+      <div>
+        <h2>Domains</h2>
+        <DomainTable domains={this.state.domains} />
+
+        <h3>New Domain</h3>
+        <DomainForm />
+      </div>
+    );
+  },
+
+  // private
+
+  fetchDomains: function() {
+    var self = this;
+
+    app.client.Domain.fetch(function(err, domains){
+      if (err) return console.error(err);
+      self.setState({ domains: domains });
+    });
+  },
 });
 
