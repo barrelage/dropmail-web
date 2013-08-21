@@ -52,7 +52,7 @@ Views.Templates.Show = React.createClass({
   fetchTemplate: function() {
     var self = this;
 
-    app.client.Template.find(this.props.id, function(err, template) {
+    app.client.Template.find(this.props.slug, function(err, template) {
       if (err) return console.error(err);
       self.setState({ template: template });
     });
