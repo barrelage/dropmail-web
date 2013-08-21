@@ -6,9 +6,6 @@ App = React.createClass({
     return { page: 'index' };
   },
 
-  getInitialState: function(){
-  },
-
   render: function(){
     var auth = app.authorization;
 
