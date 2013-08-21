@@ -52,7 +52,6 @@ Views.Account = React.createClass({
 
     app.client.User.me(function(err, user){
       if (err) return console.error(err);
-      console.log(user);
       self.setState({ user: user });
     });
   }
