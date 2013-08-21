@@ -93,8 +93,8 @@
 
       var $signup = $('form.signup');
       dm.User.form($signup, respond($signup, function(err, user) {
-        console.log(err);
-        console.log(user);
+        if (err) return console.error(err);
+        dm.startSession($signup, window.location.reload.bind(window.location));
       }));
 
       var $signin = $('form.signin');
