@@ -11,15 +11,21 @@ OrganizationList = React.createClass({
       , currentOrg = app.authorization.get('organization');
 
     function listItem(org){
+      var listClass;
+
+      if (currentOrg.get('id') === org.get('id')) {
+        listClass = 'current';
+      }
+
       return (
-        <li onClick={app.changeOrg.bind(this, org)}>
+        <li class={listClass} onClick={app.changeOrg.bind(this, org)}>
           <a href='#'>{org.get('name')}</a>
         </li>
       );
     }
 
     return this.transferPropsTo(
-      <ul>
+      <ul class='organization-list'>
         {this.state.organizations.map(listItem)}
 
         <li class='divider'></li>

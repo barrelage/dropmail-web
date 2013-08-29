@@ -16,7 +16,7 @@ Views.Organizations.New = React.createClass({
           <FormField
             label='Name'
             name='name'
-            placeholder='Dellsys, Inc.'
+            placeholder='Acme, Inc.'
             errors={this.state.errors.name} />
           <FormSubmit label='Create Organization' />
         </form>
