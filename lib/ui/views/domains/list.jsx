@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
-Views.Domains = React.createClass({
+if (Views.Domains == undefined) Views.Domains = {};
+
+Views.Domains.List = React.createClass({
 
   getInitialState: function() {
     this.fetchDomains();

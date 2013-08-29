@@ -1,4 +1,6 @@
 /** @jsx React.DOM */
+if (Views.Organizations == undefined) Views.Organizations = {};
+
 Views.Organizations.New = React.createClass({
 
   getInitialState: function() {
