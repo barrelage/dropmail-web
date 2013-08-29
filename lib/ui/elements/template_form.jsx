@@ -7,7 +7,12 @@ TemplateForm = React.createClass({
 
   render: function() {
     return (
-      <form method='post' class='form-horizontal' ref='form' onSubmit={this.handleSubmit}>
+      <form
+        method='post'
+        class='form-horizontal'
+        ref='form'
+        onSubmit={this.handleSubmit}>
+
         <FormField
           label='Name'
           name='name'
