@@ -11,7 +11,7 @@ App = React.createClass({
 
     return (
       <div>
-        <div class='col-md-2'>
+        <div class='col-sm-3 col-md-2'>
           <ul class='nav nav-stacked'>
             <li class='logo' onClick={app.goTo}>
               <a href='#'>Dropmail</a>
@@ -64,7 +64,7 @@ App = React.createClass({
           </ul>
         </div>
 
-        <div class='col-md-10'>
+        <div class='col-sm-9 col-md-10'>
           {this.renderPage()}
         </div>
       </div>

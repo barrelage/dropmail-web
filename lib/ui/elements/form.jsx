@@ -2,7 +2,11 @@
 FormSubmit = React.createClass({
   render: function(){
     return (
-      <button class='btn btn-primary' type='submit' data-loading='Loading…'>
+      <button
+        class='btn btn-primary'
+        type='submit'
+        data-loading={(this.props.action || 'Loading') + '…'}>
+
         {this.props.label}
       </button>
     )
@@ -31,6 +35,7 @@ FormField = React.createClass({
             class='form-control'
             type={this.props.type || 'text'}
             name={this.props.name}
+            value={this.props.value}
             placeholder={this.props.placeholder}
           />
           {helpBlock}

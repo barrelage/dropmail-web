@@ -11,8 +11,9 @@ Views.Templates.Show = React.createClass({
   render: function() {
     return (
       <div>
-
         <h2>Show Template</h2>
+
+        <a href='#' onClick={this.goToEdit}>Edit</a>
 
         <form class="form-horizontal" role="form">
           <div class="form-group">
@@ -37,11 +38,63 @@ Views.Templates.Show = React.createClass({
 
           <div class="form-group">
             <label class="col-lg-2 control-label">
+              From
+            </label>
+
+            <div class="col-lg-10">
+              {this.state.template.get('from')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
+              Subject
+            </label>
+
+            <div class="col-lg-10">
+              {this.state.template.get('subject')}
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
+              Published Revision
+            </label>
+
+            <div class="col-lg-10">
+              {this.state.template.get('published_revision')
+                || 'not yet published'}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
+              Latest Revision
+            </label>
+
+            <div class="col-lg-10">
+              {this.state.template.get('latest_revision')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
               Created at
             </label>
 
             <div class="col-lg-10">
               {this.state.template.get('created_at')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
+              Last updated at
+            </label>
+
+            <div class="col-lg-10">
+              {this.state.template.get('updated_at')}
             </div>
           </div>
         </form>
@@ -58,6 +111,11 @@ Views.Templates.Show = React.createClass({
       if (err) return console.error(err);
       self.setState({ template: template });
     });
+  },
+
+  goToEdit: function() {
+    app.goTo('templates/' + this.props.slug + '/edit');
+    return false;
   }
 });
 
