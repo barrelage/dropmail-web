@@ -1,4 +1,6 @@
 /** @jsx React.DOM */
+if (Views.Domains == undefined) Views.Domains = {};
+
 Views.Domains.Show = React.createClass({
 
   getInitialState: function() {

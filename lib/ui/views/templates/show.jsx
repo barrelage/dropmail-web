@@ -1,4 +1,6 @@
 /** @jsx React.DOM */
+if (Views.Templates == undefined) Views.Templates = {};
+
 Views.Templates.Show = React.createClass({
 
   getInitialState: function() {

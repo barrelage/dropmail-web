@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
-Views.Templates = React.createClass({
+if (Views.Templates == undefined) Views.Templates = {};
+
+Views.Templates.List = React.createClass({
 
   getInitialState: function() {
     this.fetchTemplates();

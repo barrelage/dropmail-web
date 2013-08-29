@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
-Views.Account = React.createClass({
+if (Views.Account == undefined) Views.Account = {};
+
+Views.Account.Show = React.createClass({
 
   getInitialState: function() {
     this.fetchUser();
