@@ -11,9 +11,6 @@ OrganizationList = React.createClass({
       , currentOrg = app.authorization.get('organization');
 
     function listItem(org){
-      // don't display current organization in list
-      if (currentOrg.get('id') === org.get('id')) return;
-
       return (
         <li onClick={app.changeOrg.bind(this, org)}>
           <a href='#'>{org.get('name')}</a>
