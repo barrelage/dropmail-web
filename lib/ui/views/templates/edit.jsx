@@ -8,6 +8,24 @@ Views.Templates.Edit = React.createClass({
     return { template: new app.client.Template, errors: {} };
   },
 
+  componentDidUpdate: function() {
+    var editor = ace.edit('editor');
+    editor.session.setMode("ace/mode/html");
+    editor.getSession().setTabSize(2);
+
+    var updatePreview = ace.require("./lib/lang").delayedCall(function() {
+      var value = editor.session.getValue();
+      $('.preview').contents().find('body').html(value);
+      $('form textarea[name=html]').val(value);
+    });
+
+    updatePreview();
+
+    editor.session.on('change', function() {
+      updatePreview.schedule(500);
+    });
+  },
+
   render: function() {
     return (
       <div>
@@ -31,17 +49,16 @@ Views.Templates.Edit = React.createClass({
             value={this.state.template.get('subject')} />
 
           <div class='form-group'>
+            <div id='editor'>{this.state.template.get('html')}</div>
+
             <textarea
-              class='col-lg-6 col-sm-12 editor'
+              class='hidden'
               name='html'
-              onChange={this.handleChange}
-              ref='editor'
               value={this.state.template.get('html')} />
 
             <iframe
               class='col-lg-6 col-sm-12 preview'
               ref='preview' />
-
           </div>
 
           <div class='form-group'>
@@ -53,11 +70,6 @@ Views.Templates.Edit = React.createClass({
   },
 
   // private
-
-  componentDidUpdate: function() {
-    var preview = this.refs.preview.getDOMNode();
-    preview.contentDocument.body.innerHTML = this.state.template.get('html');
-  },
 
   handleChange: function() {
     var value = this.refs.editor.getDOMNode().value

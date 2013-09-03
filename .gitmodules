@@ -7,3 +7,6 @@
 [submodule "vendor/dropmail-api"]
 	path = vendor/dropmail-api
 	url = git@github.com:barrelage/dropmail-api.git
+[submodule "vendor/ace"]
+	path = vendor/ace
+	url = https://github.com/ajaxorg/ace-builds.git
