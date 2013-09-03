@@ -19,6 +19,7 @@ Views.Templates.Edit = React.createClass({
       $('form textarea[name=html]').val(value);
     });
 
+    editor.session.setValue(this.state.template.get('html'));
     updatePreview();
 
     editor.session.on('change', function() {
@@ -49,7 +50,7 @@ Views.Templates.Edit = React.createClass({
             value={this.state.template.get('subject')} />
 
           <div class='form-group'>
-            <div id='editor'>{this.state.template.get('html')}</div>
+            <div id='editor'></div>
 
             <textarea
               class='hidden'
