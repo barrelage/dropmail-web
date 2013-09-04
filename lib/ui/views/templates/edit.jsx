@@ -40,6 +40,11 @@ Views.Templates.Edit = React.createClass({
             ref='form'
             onSubmit={this.handleSave}>
 
+            <input
+              type='hidden'
+              name='id'
+              value={this.state.template.get('id')} />
+
             <div class='row'>
               <div class='col-lg-6 col-sm-12'>
                 <FormField
@@ -80,7 +85,7 @@ Views.Templates.Edit = React.createClass({
 
     app.client.Template.save($form, function(err, template){
       if (err) return self.setState({ errors: err.attributes });
-      console.log('saved');
+      self.setState({ template: template });
     });
 
     return false;
