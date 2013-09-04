@@ -10,7 +10,7 @@ App = React.createClass({
     var auth = app.authorization;
 
     return (
-      <div>
+      <div class='row'>
         <div class='col-sm-3 col-md-2'>
           <ul class='nav nav-stacked'>
             <li class='logo' onClick={app.goTo}>
