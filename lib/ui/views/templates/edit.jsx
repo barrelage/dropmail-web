@@ -29,55 +29,50 @@ Views.Templates.Edit = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <h2>Template Edit</h2>
+      <div class='row'>
+        <div class='col-md-12'>
+          <h2>Template Edit</h2>
 
-        <form
-          method='post'
-          class='form-horizontal'
-          role='form'
-          ref='form'
-          onSubmit={this.handleSave}>
+          <form
+            method='post'
+            class='form-horizontal'
+            role='form'
+            ref='form'
+            onSubmit={this.handleSave}>
 
-          <input name='id' type='hidden' value={this.state.template.get('id')} />
+            <div class='row'>
+              <div class='col-lg-6 col-sm-12'>
+                <FormField
+                  label='From'
+                  value={this.state.template.get('from')} />
 
-          <FormField
-            label='From'
-            value={this.state.template.get('from')} />
+                <FormField
+                  label='Subject'
+                  value={this.state.template.get('subject')} />
 
-          <FormField
-            label='Subject'
-            value={this.state.template.get('subject')} />
+                <div class='form-group'>
+                  <div id='editor'></div>
 
-          <div class='form-group'>
-            <div id='editor'></div>
+                  <textarea
+                    class='hidden'
+                    name='html'
+                    value={this.state.template.get('html')} />
+                </div>
 
-            <textarea
-              class='hidden'
-              name='html'
-              value={this.state.template.get('html')} />
+                <FormSubmit label='Save' action='Saving' />
+              </div>
 
-            <iframe
-              class='col-lg-6 col-sm-12 preview'
-              ref='preview' />
-          </div>
-
-          <div class='form-group'>
-            <FormSubmit label='Save' action='Saving' />
-          </div>
-        </form>
+              <div class='col-lg-6 col-sm-12'>
+                <iframe class='col-sm-12 preview' ref='preview' />
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   },
 
   // private
-
-  handleChange: function() {
-    var value = this.refs.editor.getDOMNode().value
-      , template = this.state.template.set('html', value);
-
-    this.setState({ template: template });
-  },
 
   handleSave: function() {
     var self = this
