@@ -9,14 +9,22 @@ Views.Templates.Edit = React.createClass({
   },
 
   componentDidUpdate: function() {
-    var editor = ace.edit('editor');
+    var self = this
+      , editor = ace.edit('editor');
+
     editor.session.setMode("ace/mode/html");
     editor.getSession().setTabSize(2);
 
     var updatePreview = ace.require("./lib/lang").delayedCall(function() {
-      var value = editor.session.getValue();
-      $('.preview').contents().find('body').html(value);
+      var $form = $(self.refs.form.getDOMNode())
+        , value = editor.session.getValue();
+
       $('form textarea[name=html]').val(value);
+
+      app.client.Template.preview($form, {}, function(err, message) {
+        if (err) return console.error(err);
+        $('.preview').contents().find('body').html(message.get('html'));
+      });
     });
 
     editor.session.setValue(this.state.template.get('html'));
