@@ -1,4 +1,4 @@
-/** @jsx React.DOM **/
+/** @jsx React.DOM */
 TemplateTable = React.createClass({
 
   render: function() {

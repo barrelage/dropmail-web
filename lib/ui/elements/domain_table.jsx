@@ -1,4 +1,4 @@
-/** @jsx React.DOM **/
+/** @jsx React.DOM */
 DomainTable = React.createClass({
 
   render: function() {
