@@ -23,7 +23,10 @@ Views.Templates.Edit = React.createClass({
 
       app.client.Template.preview($form, {}, function(err, message) {
         if (err) return console.error(err);
+
         $('.preview').contents().find('body').html(message.get('html'));
+        $('.from').html(message.get('from'));
+        $('.subject').html(message.get('subject'));
       });
     });
 
@@ -56,12 +59,16 @@ Views.Templates.Edit = React.createClass({
             <div class='row'>
               <div class='col-lg-6 col-sm-12'>
                 <FormField
+                  name='from'
                   label='From'
-                  value={this.state.template.get('from')} />
+                  value={this.state.template.get('from')}
+                  onChange={this.handleChange }/>
 
                 <FormField
+                  name='subject'
                   label='Subject'
-                  value={this.state.template.get('subject')} />
+                  value={this.state.template.get('subject')}
+                  onChange={this.handleChange}/>
 
                 <div class='form-group'>
                   <div id='editor'></div>
@@ -76,6 +83,8 @@ Views.Templates.Edit = React.createClass({
               </div>
 
               <div class='col-lg-6 col-sm-12'>
+                <div>From: <span class='from' /></div>
+                <div>Subject: <span class='subject' /></div>
                 <iframe class='col-sm-12 preview' ref='preview' />
               </div>
             </div>
@@ -86,6 +95,11 @@ Views.Templates.Edit = React.createClass({
   },
 
   // private
+
+  handleChange: function(event) {
+    this.state.template.set(event.target.name, event.target.value);
+    this.setState({ template: this.state.template });
+  },
 
   handleSave: function() {
     var self = this
