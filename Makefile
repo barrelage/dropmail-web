@@ -8,6 +8,7 @@ DM_JS  = vendor/dropmail.js
 
 # sources
 
+SRC_UI  = $(shell find lib/ui -name "*.jsx")
 SRC_WEB = $(shell find lib -name "*.js")
 SRC_LIB = $(PWD)/$(DM_JS)/build/dropmail.js
 SRC_VEN = $(shell find vendor/js -name "*.js")
@@ -68,7 +69,11 @@ $(APP): $(APP_LIB) $(APP_UI) $(APP_WEB)
 	@cat $^ > $@
 
 $(APP_UI): $(SRC_UI)
-	@./node_modules/react-tools/bin/jsx --cache-dir /tmp -x jsx lib/ui/ build/js/ui
+	@./node_modules/react-tools/bin/jsx \
+		--cache-dir $(TMPDIR) \
+		--extension jsx \
+		lib/ui \
+		build/js/ui
 	@cat `find build/js/ui -name "*.js"` > $@
 
 $(APP_WEB): $(SRC_WEB)
