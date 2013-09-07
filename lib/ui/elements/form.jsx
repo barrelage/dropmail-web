@@ -16,7 +16,15 @@ FormSubmit = React.createClass({
 FormField = React.createClass({
   render: function(){
     var groupClass = 'form-group'
-      , helpBlock;
+      , helpBlock
+      , input = this.transferPropsTo(
+          <input
+            class='form-control'
+            type={this.props.type || 'text'}
+            name={this.props.name}
+            placeholder={this.props.placeholder}
+          />
+        );
 
     if (this.props.errors && this.props.errors.length){
       groupClass += ' error';
@@ -31,16 +39,11 @@ FormField = React.createClass({
           {this.props.label}
         </label>
         <div class='col-lg-10'>
-          <input
-            class='form-control'
-            type={this.props.type || 'text'}
-            name={this.props.name}
-            value={this.props.value}
-            placeholder={this.props.placeholder}
-          />
+          {input}
           {helpBlock}
         </div>
       </div>
     );
   }
 });
+
