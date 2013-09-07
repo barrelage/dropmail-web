@@ -1,4 +1,4 @@
-/** @jsx React.DOM **/
+/** @jsx React.DOM */
 MemberTable = React.createClass({
 
   render: function() {

@@ -1,4 +1,4 @@
-/** @jsx React.DOM **/
+/** @jsx React.DOM */
 TemplateForm = React.createClass({
 
   getInitialState: function() {

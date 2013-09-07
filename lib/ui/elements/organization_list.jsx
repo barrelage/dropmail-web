@@ -1,4 +1,4 @@
-/** @jsx React.DOM **/
+/** @jsx React.DOM */
 OrganizationList = React.createClass({
 
   getInitialState: function() {
