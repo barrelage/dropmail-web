@@ -4,7 +4,8 @@
   , "version": "0.0.1"
   , "private": true
   , "scripts": {
-      "start": "nf start"
+        "install": "make"
+      , "start": "nf start"
     }
   , "repository": {
         "type": "git"
