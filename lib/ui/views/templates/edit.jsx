@@ -5,37 +5,22 @@ Views.Templates.Edit = React.createClass({
 
   getInitialState: function() {
     this.fetchTemplate();
-    return { template: new app.client.Template, errors: {} };
+
+    return {
+      template: new app.client.Template,
+      message: new app.client.Message,
+      errors: {}
+    };
   },
 
-  componentDidUpdate: function() {
+  componentDidMount: function() {
     var self = this
       , editor = ace.edit('editor');
 
     editor.session.setMode("ace/mode/html");
     editor.getSession().setTabSize(2);
 
-    var updatePreview = ace.require("./lib/lang").delayedCall(function() {
-      var $form = $(self.refs.form.getDOMNode())
-        , value = editor.session.getValue();
-
-      $('form textarea[name=html]').val(value);
-
-      app.client.Template.preview($form, {}, function(err, message) {
-        if (err) return console.error(err);
-
-        $('.preview').contents().find('body').html(message.get('html'));
-        $('.from').html(message.get('from'));
-        $('.subject').html(message.get('subject'));
-      });
-    });
-
-    editor.session.setValue(this.state.template.get('html'));
-    updatePreview();
-
-    editor.session.on('change', function() {
-      updatePreview.schedule(500);
-    });
+    this.setState({ editor: editor });
   },
 
   render: function() {
@@ -62,29 +47,30 @@ Views.Templates.Edit = React.createClass({
                   name='from'
                   label='From'
                   value={this.state.template.get('from')}
-                  onChange={this.handleChange }/>
+                  onChange={this.handleChange } />
 
                 <FormField
                   name='subject'
                   label='Subject'
                   value={this.state.template.get('subject')}
-                  onChange={this.handleChange}/>
+                  onChange={this.handleChange} />
 
                 <div class='form-group'>
                   <div id='editor'></div>
-
-                  <textarea
-                    class='hidden'
-                    name='html'
-                    value={this.state.template.get('html')} />
                 </div>
 
                 <FormSubmit label='Save' action='Saving' />
               </div>
 
               <div class='col-lg-6 col-sm-12'>
-                <div>From: <span class='from' /></div>
-                <div>Subject: <span class='subject' /></div>
+                <div>
+                  From: <span class='from'>{this.state.message.get('from')}</span>
+                </div>
+
+                <div>
+                  Subject: <span class='subject'>{this.state.message.get('subject')}</span>
+                </div>
+
                 <iframe class='col-sm-12 preview' ref='preview' />
               </div>
             </div>
@@ -99,11 +85,24 @@ Views.Templates.Edit = React.createClass({
   handleChange: function(event) {
     this.state.template.set(event.target.name, event.target.value);
     this.setState({ template: this.state.template });
+
+    this.updatePreview();
+  },
+
+  updatePreview: function() {
+    var self = this
+      , $preview = $(this.refs.preview.getDOMNode());
+
+    this.state.template.preview({}, function(err, message) {
+      if (err) return console.error(err);
+
+      $preview.contents().find('body').html(message.get('html'));
+      self.setState({ message: message });
+    });
   },
 
   handleSave: function() {
-    var self = this
-      , $form = $(this.refs.form.getDOMNode());
+    var self = this;
 
     app.client.Template.save($form, function(err, template){
       if (err) return self.setState({ errors: err.attributes });
@@ -118,7 +117,17 @@ Views.Templates.Edit = React.createClass({
 
     app.client.Template.find(this.props.slug, function(err, template) {
       if (err) return console.error(err);
+
+      self.state.editor.session.setValue(template.get('html'));
+
+      self.state.editor.session.on('change', function(e) {
+        self.state.template.set('html', self.state.editor.session.getValue());
+        self.updatePreview();
+      });
+
       self.setState({ template: template });
+
+      self.updatePreview();
     });
   }
 
