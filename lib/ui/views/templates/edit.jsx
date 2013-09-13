@@ -32,14 +32,7 @@ Views.Templates.Edit = React.createClass({
           <form
             method='post'
             class='form-horizontal'
-            role='form'
-            ref='form'
             onSubmit={this.handleSave}>
-
-            <input
-              type='hidden'
-              name='id'
-              value={this.state.template.get('id')} />
 
             <div class='row'>
               <div class='col-lg-6 col-sm-12'>
@@ -60,6 +53,11 @@ Views.Templates.Edit = React.createClass({
                 </div>
 
                 <FormSubmit label='Save' action='Saving' />
+
+                <input ref='to' class='form-control' type='text' name='to' />
+                <button class='btn btn-default' onClick={this.sendPreview}>
+                  Send
+                </button>
               </div>
 
               <div class='col-lg-6 col-sm-12'>
@@ -93,7 +91,7 @@ Views.Templates.Edit = React.createClass({
     var self = this
       , $preview = $(this.refs.preview.getDOMNode());
 
-    this.state.template.preview({}, function(err, message) {
+    this.state.template.preview({ name: 'Tyler' }, function(err, message) {
       if (err) return console.error(err);
 
       $preview.contents().find('body').html(message.get('html'));
@@ -101,12 +99,27 @@ Views.Templates.Edit = React.createClass({
     });
   },
 
-  handleSave: function() {
+  handleSave: function(callback) {
     var self = this;
 
-    app.client.Template.save($form, function(err, template){
+    this.state.template.save(function(err, template){
       if (err) return self.setState({ errors: err.attributes });
       self.setState({ template: template });
+
+      if (callback) callback(err, template);
+    });
+
+    return false;
+  },
+
+  sendPreview: function() {
+    var params = { name: 'Tyler' };
+    params.to = this.refs.to.getValue();
+
+    this.state.template.send(params, function(err, message) {
+      if (err) return console.error(err);
+
+      console.log('email sent');
     });
 
     return false;
