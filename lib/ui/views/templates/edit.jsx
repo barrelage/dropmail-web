@@ -54,10 +54,7 @@ Views.Templates.Edit = React.createClass({
 
                 <FormSubmit label='Save' action='Saving' />
 
-                <input ref='to' class='form-control' type='text' name='to' />
-                <button class='btn btn-default' onClick={this.sendPreview}>
-                  Send
-                </button>
+                <SendTest handleSend={this.sendPreview} />
               </div>
 
               <div class='col-lg-6 col-sm-12'>
@@ -112,9 +109,9 @@ Views.Templates.Edit = React.createClass({
     return false;
   },
 
-  sendPreview: function() {
+  sendPreview: function(to) {
     var params = { name: 'Tyler' };
-    params.to = this.refs.to.getValue();
+    params.to = to;
 
     this.state.template.send(params, function(err, message) {
       if (err) return console.error(err);
@@ -143,6 +140,56 @@ Views.Templates.Edit = React.createClass({
       self.updatePreview();
     });
   }
-
 });
 
+SendTest = React.createClass({
+  getInitialState: function() {
+    return { hideForm: true };
+  },
+
+  render: function() {
+    if (this.state.hideForm) {
+      return (
+        <div class='send-preview'>
+          <button class='btn btn-default' onClick={this.toggleForm}>
+            Send as email
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div class='send-preview'>
+        <input
+          ref='to'
+          class='form-control'
+          type='text'
+          placeholder='johnny@example.com' />
+
+        <button class='btn btn-primary' onClick={this.sendForm}>
+          Send
+        </button>
+
+        <button class='btn btn-default' onClick={this.toggleForm}>
+          Cancel
+        </button>
+      </div>
+    );
+  },
+
+  // private
+
+  toggleForm: function() {
+    this.setState({ hideForm: !this.state.hideForm });
+
+    return false;
+  },
+
+  sendForm: function() {
+    this.props.handleSend(this.refs.to.getValue());
+    this.toggleForm();
+
+    return false;
+  }
+
+});
