@@ -6,8 +6,13 @@ Views.Templates.Show = React.createClass({
   mixins: [FetchTemplateMixin],
 
   getInitialState: function() {
-    this.fetchTemplate();
-    return { template: new app.client.Template };
+    var self = this;
+
+    this.fetchTemplate(function() {
+      self.fetchRevisions();
+    });
+
+    return { template: new app.client.Template, revisions: [] };
   },
 
   render: function() {
@@ -58,7 +63,6 @@ Views.Templates.Show = React.createClass({
             </div>
           </div>
 
-
           <div class="form-group">
             <label class="col-lg-2 control-label">
               Published Revision
@@ -100,6 +104,8 @@ Views.Templates.Show = React.createClass({
             </div>
           </div>
         </form>
+
+        <TemplateRevisionList revisions={this.state.revisions} />
       </div>
     );
   },
@@ -109,5 +115,50 @@ Views.Templates.Show = React.createClass({
   goToEdit: function() {
     app.goTo('templates/' + this.props.slug + '/edit');
     return false;
+  },
+
+  // private
+
+  fetchRevisions: function() {
+    var self = this;
+
+    this.state.template.revisions(function(err, revisions) {
+      if (err) return console.error(err);
+      self.setState({ revisions: revisions });
+    });
   }
+});
+
+TemplateRevisionList = React.createClass({
+
+  getDefaultProps: function() {
+    return { revisions: [] };
+  },
+
+  render: function() {
+    function listItem(revision){
+      return (
+        <tr>
+          <td>{revision.get('user').get('name')}</td>
+          <td>{revision.get('created_at')}</td>
+        </tr>
+      );
+    }
+
+    return (
+      <table class='table table-striped'>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {this.props.revisions.map(listItem)}
+        </tbody>
+      </table>
+    );
+  },
+
 });
