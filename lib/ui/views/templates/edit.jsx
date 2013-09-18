@@ -3,8 +3,21 @@ if (Views.Templates == undefined) Views.Templates = {};
 
 Views.Templates.Edit = React.createClass({
 
+  mixins: [FetchTemplateMixin],
+
   getInitialState: function() {
-    this.fetchTemplate();
+    var self = this;
+
+    this.fetchTemplate(function(err, template) {
+      self.state.editor.session.setValue(template.get('html'));
+
+      self.state.editor.session.on('change', function(e) {
+        self.state.template.set('html', self.state.editor.session.getValue());
+        self.updatePreview();
+      });
+
+      self.updatePreview();
+    });
 
     return {
       template: new app.client.Template,
@@ -120,25 +133,6 @@ Views.Templates.Edit = React.createClass({
     });
 
     return false;
-  },
-
-  fetchTemplate: function() {
-    var self = this;
-
-    app.client.Template.find(this.props.slug, function(err, template) {
-      if (err) return console.error(err);
-
-      self.state.editor.session.setValue(template.get('html'));
-
-      self.state.editor.session.on('change', function(e) {
-        self.state.template.set('html', self.state.editor.session.getValue());
-        self.updatePreview();
-      });
-
-      self.setState({ template: template });
-
-      self.updatePreview();
-    });
   }
 });
 

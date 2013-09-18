@@ -3,6 +3,8 @@ if (Views.Templates == undefined) Views.Templates = {};
 
 Views.Templates.Show = React.createClass({
 
+  mixins: [FetchTemplateMixin],
+
   getInitialState: function() {
     this.fetchTemplate();
     return { template: new app.client.Template };
@@ -104,18 +106,8 @@ Views.Templates.Show = React.createClass({
 
   // private
 
-  fetchTemplate: function() {
-    var self = this;
-
-    app.client.Template.find(this.props.slug, function(err, template) {
-      if (err) return console.error(err);
-      self.setState({ template: template });
-    });
-  },
-
   goToEdit: function() {
     app.goTo('templates/' + this.props.slug + '/edit');
     return false;
   }
 });
-
