@@ -21,7 +21,7 @@ Views.Templates.Edit = React.createClass({
 
     return {
       template: new app.client.Template,
-      message: new app.client.Message,
+      email: new app.client.Email,
       errors: {}
     };
   },
@@ -72,11 +72,11 @@ Views.Templates.Edit = React.createClass({
 
               <div class='col-lg-6 col-sm-12'>
                 <div>
-                  From: <span class='from'>{this.state.message.get('from')}</span>
+                  From: <span class='from'>{this.state.email.get('from')}</span>
                 </div>
 
                 <div>
-                  Subject: <span class='subject'>{this.state.message.get('subject')}</span>
+                  Subject: <span class='subject'>{this.state.email.get('subject')}</span>
                 </div>
 
                 <iframe class='col-sm-12 preview' ref='preview' />
@@ -101,11 +101,11 @@ Views.Templates.Edit = React.createClass({
     var self = this
       , $preview = $(this.refs.preview.getDOMNode());
 
-    this.state.template.preview({ name: 'Tyler' }, function(err, message) {
+    this.state.template.preview({ name: 'Tyler' }, function(err, email) {
       if (err) return console.error(err);
 
-      $preview.contents().find('body').html(message.get('html'));
-      self.setState({ message: message });
+      $preview.contents().find('body').html(email.get('html'));
+      self.setState({ email: email });
     });
   },
 
@@ -126,7 +126,7 @@ Views.Templates.Edit = React.createClass({
     var params = { name: 'Tyler' };
     params.to = to;
 
-    this.state.template.send(params, function(err, message) {
+    this.state.template.send(params, function(err, email) {
       if (err) return console.error(err);
 
       console.log('email sent');
