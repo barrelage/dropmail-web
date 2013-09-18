@@ -103,7 +103,7 @@ Views.Templates.Edit = React.createClass({
       if (err) return self.setState({ errors: err.attributes });
       self.setState({ template: template });
 
-      if (callback) callback(err, template);
+      if (_.isFunction(callback)) callback(err, template);
     });
 
     return false;
