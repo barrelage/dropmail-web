@@ -7,82 +7,55 @@
     <link href="/css/app.css" rel="stylesheet">
   </head>
   <body>
-    <div class="container" id="container">
-      <div class="layout">
-        <div class="row">
-          <div class="span12">
-            <div class="navbar">
-              <div class="navbar-inner">
-                <div class="container">
-                  <a href="/" class="brand">Dropmail</a>
-                  <div class="nav-collapse collapse">
-                    <ul class="nav pull-right">
-                      <li>
-                        <a href="/sign_in">Sign In</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="span9">
-            <h1>Powerful transactional email management</h1>
-            <p class="lead">Empowering people to get shit done</p>
-          </div>
-
-          <div class="span3">
-            <form method="post" class="signup">
-              <div class="control-group">
-                <label class="control-label">Name</label>
-                <div class="controls">
-                  <input type="text" name="name" placeholder="First Last">
-                </div>
-              </div>
-
-              <div class="control-group">
-                <label class="control-label">Email</label>
-                <div class="controls">
-                  <input type="email" name="email" placeholder="user@example.com">
-                </div>
-              </div>
-
-              <div class="control-group">
-                <label class="control-label">Password</label>
-
-                <div class="controls">
-                  <input type="password" name="password" placeholder="••••••••">
-                </div>
-              </div>
-
-              <button class="btn btn-primary" type="submit" data-loading="Loading…">Sign Up</button>
-            </form>
-
-            <form method="post" class="signin">
-              <div class="control-group">
-                <label class="control-label">Email</label>
-                <div class="controls">
-                  <input type="email" name="email" placeholder="user@example.com">
-                </div>
-              </div>
-
-              <div class="control-group">
-                <label class="control-label">Password</label>
-
-                <div class="controls">
-                  <input type="password" name="password" placeholder="••••••••">
-                </div>
-              </div>
-
-              <button class="btn btn-primary" type="submit" data-loading="Loading…">Sign In</button>
-            </form>
-          </div>
-        </div>
+    <div class="container">
+      <div class="col-md-9">
+        <h1>Powerful transactional email management</h1>
+        <p class="lead">Empowering people to get shit done</p>
       </div>
-    </div>
+
+      <div class="col-md-3">
+        <form method="post" class="signup">
+          <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" name="name" placeholder="First Last">
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input class="form-control" type="email" name="email" placeholder="user@example.com">
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input class="form-control" type="password" name="password" placeholder="••••••••">
+          </div>
+
+          <button type="submit" class="btn btn-primary" data-loading="Loading…">Sign Up</button>
+
+          <p>
+            <a href="#" class='change-form'>Already has an account? Sign in.</a>
+          </p>
+        </form>
+
+        <form method="post" class="signin">
+          <div class="form-group">
+            <label>Email</label>
+            <input class="form-control" type="email" name="email" placeholder="user@example.com">
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input class="form-control" type="password" name="password" placeholder="••••••••">
+          </div>
+
+          <button type="submit" class="btn btn-primary" data-loading="Loading…">Sign In</button>
+
+          <p>
+            <a href="#" class='change-form'>Don't have an account? Sign up.</a>
+          </p>
+        </form>
+      </div>
+    </div> <!-- /container -->
 
     <script src='/js/vendor.js'></script>
     <script src='/js/dropmail.js'></script>
@@ -91,55 +64,67 @@
         baseURL: "http://0.0.0.0:9393"
       });
 
-      var $signup = $('form.signup');
-      dm.User.form($signup, respond($signup, function(err, user) {
-        if (err) return console.error(err);
-        dm.startSession($signup, window.location.reload.bind(window.location));
-      }));
-
-      var $signin = $('form.signin');
-      $signin.on('submit', function() {
-        dm.startSession($signin, respond($signin, function(err) {
-          $signin.find('.alert').remove();
-
-          if (err) {
-            $signin.prepend("<div class='alert'>" + err.message + "</div>");
-          } else {
-            window.location.reload();
-          }
-
+      $(function() {
+        var $signup = $('form.signup');
+        dm.User.form($signup, respond($signup, function(err, user) {
+          if (err) return console.error(err);
+          dm.startSession($signup, window.location.reload.bind(window.location));
         }));
 
-        return false;
-      });
+        var $signin = $('form.signin');
+        $signin.on('submit', function() {
+          dm.startSession($signin, respond($signin, function(err) {
+            $signin.find('.alert').remove();
 
-      function respond($form, callback){
-        var $button = $(this).children('button')
-          , buttonText = $button.text();
-
-        return function(err, object){
-          $form.find('.control-group').removeClass('error');
-          $form.find('.help-block').remove();
-
-          if (err) {
-            var errors = err.attributes;
-
-            for (var name in errors) {
-              var input = $form.find('input[name=' + name + ']');
-              input.closest('.control-group').addClass('error');
-              input.after("<div class='help-block'>" + toSentence(errors[name]) + '</div>');
+            if (err) {
+              $signin.prepend("<div class='alert alert-danger'>" + err.message + "</div>");
+            } else {
+              window.location.reload();
             }
 
-            $button.attr('disabled', false).text(buttonText);
-          }
+          }));
 
-          callback(err, object);
-        };
-      }
+          return false;
+        });
 
-      function toSentence(array){
-        return array.join(', ');
-      }
+        $signin.hide();
+        $('a.change-form').on('click', handleFormChange);
+
+        function handleFormChange() {
+          $signin.toggle();
+          $signup.toggle();
+
+          return false;
+        }
+
+        function respond($form, callback){
+          var $button = $(this).children('button')
+            , buttonText = $button.text();
+
+          return function(err, object){
+            $form.find('.form-group').removeClass('has-error');
+            $form.find('.help-block').remove();
+
+            if (err) {
+              var errors = err.attributes;
+
+              for (var name in errors) {
+                var input = $form.find('input[name=' + name + ']');
+                input.closest('.form-group').addClass('has-error');
+                input.after("<div class='help-block'>" + toSentence(errors[name]) + '</div>');
+              }
+
+              $button.attr('disabled', false).text(buttonText);
+            }
+
+            callback(err, object);
+          };
+        }
+
+        function toSentence(array){
+          return array.join(', ');
+        }
+      });
     </script>
   </body>
 </html>
