@@ -9,11 +9,23 @@ Views.Templates.Edit = React.createClass({
     var self = this;
 
     this.fetchTemplate(function(err, template) {
-      self.state.editor.session.setValue(template.get('html'));
+      var params = JSON.stringify(template.get('params'), null, 2);
 
+      self.state.editor.session.setValue(template.get('html'));
       self.state.editor.session.on('change', function(e) {
         self.state.template.set('html', self.state.editor.session.getValue());
         self.updatePreview();
+      });
+
+      self.state.jsonEditor.session.setValue(params);
+      self.state.jsonEditor.session.on('change', function(e) {
+        try {
+          var json = JSON.parse(self.state.jsonEditor.session.getValue());
+          self.setState({ params: json });
+          self.updatePreview();
+        } catch (e) {
+          console.error(e);
+        }
       });
 
       self.updatePreview();
@@ -22,18 +34,23 @@ Views.Templates.Edit = React.createClass({
     return {
       template: new app.client.Template,
       email: new app.client.Email,
-      errors: {}
+      errors: {},
+      params: {}
     };
   },
 
   componentDidMount: function() {
     var self = this
-      , editor = ace.edit('editor');
+      , editor = ace.edit('editor')
+      , jsonEditor = ace.edit('json-editor');
 
     editor.session.setMode("ace/mode/html");
     editor.getSession().setTabSize(2);
 
-    this.setState({ editor: editor });
+    jsonEditor.session.setMode("ace/mode/json");
+    jsonEditor.getSession().setTabSize(2);
+
+    this.setState({ editor: editor, jsonEditor: jsonEditor });
   },
 
   render: function() {
@@ -63,6 +80,10 @@ Views.Templates.Edit = React.createClass({
 
                 <div class='form-group'>
                   <div id='editor'></div>
+                </div>
+
+                <div class='form-group'>
+                  <div id='json-editor'></div>
                 </div>
 
                 <FormSubmit label='Save' action='Saving' />
@@ -101,7 +122,7 @@ Views.Templates.Edit = React.createClass({
     var self = this
       , $preview = $(this.refs.preview.getDOMNode());
 
-    this.state.template.preview({ name: 'Tyler' }, function(err, email) {
+    this.state.template.preview(self.state.params, function(err, email) {
       if (err) return console.error(err);
 
       $preview.contents().find('body').html(email.get('html'));
@@ -123,7 +144,7 @@ Views.Templates.Edit = React.createClass({
   },
 
   sendPreview: function(to) {
-    var params = { name: 'Tyler' };
+    var params = this.state.params;
     params.to = to;
 
     this.state.template.send(params, function(err, email) {
