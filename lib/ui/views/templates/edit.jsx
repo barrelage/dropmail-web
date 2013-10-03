@@ -144,9 +144,8 @@ Views.Templates.Edit = React.createClass({
 
   sendPreview: function(to) {
     var params = this.state.template.get('params');
-    params.to = to;
 
-    this.state.template.send(params, function(err, email) {
+    this.state.template.send(to, params, function(err, email) {
       if (err) return console.error(err);
 
       console.log('email sent');
