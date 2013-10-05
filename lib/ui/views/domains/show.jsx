@@ -80,7 +80,7 @@ Views.Domains.Show = React.createClass({
 
     this.state.domain.verify(function(err, domain){
       if (err) return self.setState({ errors: err.attributes });
-      self.fetchDomain();
+      self.setState({ domain: domain });
     });
 
     return false;
