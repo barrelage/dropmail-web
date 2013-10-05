@@ -12,7 +12,7 @@ DomainForm = React.createClass({
           label='Host'
           name='host'
           placeholder='example.com'
-          errors={this.state.errors.name} />
+          errors={this.state.errors.host} />
         <FormSubmit label='Add domain' />
       </form>
     )
