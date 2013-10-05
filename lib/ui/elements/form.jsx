@@ -27,7 +27,7 @@ FormField = React.createClass({
         );
 
     if (this.props.errors && this.props.errors.length){
-      groupClass += ' error';
+      groupClass += ' has-error';
       helpBlock = <div class='help-block'>
         {this.props.errors.join(', ')}
       </div>;
