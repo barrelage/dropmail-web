@@ -22,7 +22,7 @@ TemplateForm = React.createClass({
           label='Slug'
           name='slug'
           placeholder='order_confirmation'
-          errors={this.state.errors.name} />
+          errors={this.state.errors.slug} />
         <FormSubmit label='Create Template' />
       </form>
     )
