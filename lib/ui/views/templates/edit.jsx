@@ -157,7 +157,11 @@ Views.Templates.Edit = React.createClass({
 
 SendTest = React.createClass({
   getInitialState: function() {
-    return { hideForm: true };
+    return {
+      email: app.authorization.get('user').get('email'),
+      hideForm: true,
+      message: null
+    };
   },
 
   render: function() {
@@ -167,40 +171,47 @@ SendTest = React.createClass({
           <button class='btn btn-default' onClick={this.toggleForm}>
             Send as email
           </button>
+          <div class='send-preview-message'>
+            {this.state.message}
+          </div>
         </div>
       );
     }
 
     return (
-      <div class='send-preview'>
+      <form method='post' class='send-preview' onSubmit={this.handleSend}>
         <input
           ref='to'
           class='form-control'
           type='text'
-          placeholder='johnny@example.com' />
+          defaultValue={app.authorization.get('user').get('email')} />
 
-        <button class='btn btn-primary' onClick={this.sendForm}>
+        <button type='submit' class='btn btn-primary'>
           Send
         </button>
 
         <button class='btn btn-default' onClick={this.toggleForm}>
           Cancel
         </button>
-      </div>
+
+        <div class='send-preview-message'>
+          {this.state.message}
+        </div>
+      </form>
     );
   },
 
   // private
 
   toggleForm: function() {
-    this.setState({ hideForm: !this.state.hideForm });
+    this.setState({ hideForm: !this.state.hideForm, message: null });
 
     return false;
   },
 
-  sendForm: function() {
+  handleSend: function() {
     this.props.handleSend(this.refs.to.getValue());
-    this.toggleForm();
+    this.setState({ message: 'Email sent' });
 
     return false;
   }
