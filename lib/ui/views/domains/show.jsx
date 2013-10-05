@@ -9,6 +9,18 @@ Views.Domains.Show = React.createClass({
   },
 
   render: function() {
+
+    var self = this;
+    function verifyForm() {
+      if (self.state.domain.get('status') == 'verified') return;
+
+      return (
+        <form method='post' class='form-horizontal' ref='form' onSubmit={self.handleVerify}>
+          <FormSubmit label='Verify Now' />
+        </form>
+      );
+    }
+
     return (
       <div>
 
@@ -27,6 +39,26 @@ Views.Domains.Show = React.createClass({
 
           <div class="form-group">
             <label class="col-lg-2 control-label">
+              Status
+            </label>
+
+            <div class="col-lg-10">
+              {this.state.domain.get('status')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
+              Verification Token
+            </label>
+
+            <div class="col-lg-10">
+              {this.state.domain.get('verification_token')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
               Created at
             </label>
 
@@ -35,11 +67,24 @@ Views.Domains.Show = React.createClass({
             </div>
           </div>
         </form>
+
+        {verifyForm()}
       </div>
     );
   },
 
   // private
+
+  handleVerify: function() {
+    var self = this;
+
+    this.state.domain.verify(function(err, domain){
+      if (err) return self.setState({ errors: err.attributes });
+      self.setState({ domain: domain });
+    });
+
+    return false;
+  },
 
   fetchDomain: function() {
     var self = this;

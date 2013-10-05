@@ -9,6 +9,7 @@ DomainTable = React.createClass({
       return (
         <tr onClick={self.showDomain.bind(this, domain)}>
           <td>{domain.get('host')}</td>
+          <td>{domain.get('status')}</td>
           <td>{domain.get('created_at')}</td>
         </tr>
       );
@@ -17,7 +18,7 @@ DomainTable = React.createClass({
     if (!domains) {
       return (
         <div class='alert alert-info'>
-          Loading.. 
+          Loading..
         </div>
       );
     } else if (!domains[0]) {
@@ -33,6 +34,7 @@ DomainTable = React.createClass({
         <thead>
           <tr>
             <th>Host</th>
+            <th>Status</th>
             <th>Created At</th>
           </tr>
         </thead>
