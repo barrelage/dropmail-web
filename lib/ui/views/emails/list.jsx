@@ -17,7 +17,7 @@ Views.Emails.List = React.createClass({
         <tr onClick={self.showEmail.bind(this, email)}>
           <td>{email.get('to')}</td>
           <td>{email.get('subject')}</td>
-          <td></td>
+          <td>{email.get('send_at')}</td>
         </tr>
       );
     }
@@ -47,7 +47,7 @@ Views.Emails.List = React.createClass({
               <tr>
                 <th>To</th>
                 <th>Subject</th>
-                <th>Created At</th>
+                <th>Sent At</th>
               </tr>
             </thead>
 
