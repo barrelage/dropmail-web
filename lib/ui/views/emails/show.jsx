@@ -75,7 +75,6 @@ Views.Emails.Show = React.createClass({
   fetchEmail: function() {
     var self = this;
 
-    console.log(this.props);
     app.client.Email.find(this.props.id, function(err, email){
       if (err) return console.error(err);
       self.setState({ email: email });
