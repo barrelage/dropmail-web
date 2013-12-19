@@ -31,10 +31,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary" data-loading="Loading…">Sign Up</button>
-
-          <p>
-            <a href="#" class='change-form'>Already has an account? Sign in.</a>
-          </p>
+          <button class="btn change-form">Sign In</button>
         </form>
 
         <form method="post" class="signin">
@@ -49,10 +46,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary" data-loading="Loading…">Sign In</button>
-
-          <p>
-            <a href="#" class='change-form'>Don't have an account? Sign up.</a>
-          </p>
+          <button class="btn change-form">Sign Up</button>
         </form>
       </div>
     </div> <!-- /container -->
@@ -88,7 +82,7 @@
         });
 
         $signin.hide();
-        $('a.change-form').on('click', handleFormChange);
+        $('button.change-form').on('click', handleFormChange);
 
         function handleFormChange() {
           $signin.toggle();
