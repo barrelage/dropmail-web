@@ -210,7 +210,7 @@ SendTest = React.createClass({
   },
 
   handleSend: function() {
-    this.props.handleSend(this.refs.to.getValue());
+    this.props.handleSend(this.refs.to.getDOMNode().value);
     this.setState({ message: 'Email sent' });
 
     return false;
