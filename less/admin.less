@@ -1,3 +1,33 @@
+html,
+body,
+#container,
+#container > .row,
+#container > .row > div,
+#container > .row .nav {
+  height: 100%;
+}
+
+.col-sm-3 {
+  .nav {
+    color: #ddd;
+    background: #383633;
+    padding: 10px 0;
+
+    > li > a {
+      color: #bde;
+      padding: 10px 25px;
+
+      .glyphicon {
+        width: 25px;
+      }
+
+      &:hover {
+        background: #484644;
+      }
+    }
+  }
+}
+
 ul.organization-list .current {
   background-color: @gray-lighter;
 }

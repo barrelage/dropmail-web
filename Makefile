@@ -49,7 +49,7 @@ quiet: build
 
 watch:
 	@while :; do \
-		make quiet; \
+		make; \
 		spin=(/ - \\ \|) \
 		  && next=$${spin[$$(expr $$(date +%s) % 4)]} \
 			&& echo -e -n "$(call color-line,90,=> Watching for changes... $${next})"; \

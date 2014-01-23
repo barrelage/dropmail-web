@@ -43,7 +43,7 @@ Views.Templates.Edit = React.createClass({
       , editor = ace.edit('editor')
       , jsonEditor = ace.edit('json-editor');
 
-    editor.session.setMode("ace/mode/html");
+    editor.session.setMode("ace/mode/liquid");
     editor.getSession().setTabSize(2);
 
     jsonEditor.session.setMode("ace/mode/json");

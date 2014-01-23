@@ -19,7 +19,7 @@ App = React.createClass({
             <li class='dropdown active'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
                 <span class='glyphicon glyphicon-user' />
-                {auth.get('user').get('name')}
+                { auth.get('user').get('name') }
               </a>
               <ul class='dropdown-menu'>
                 <li onClick={this.signOut}>
@@ -33,7 +33,7 @@ App = React.createClass({
             <li class='dropdown'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
                 <span class='glyphicon glyphicon-heart' />
-                {auth.get('organization').get('name')}
+                { auth.get('organization').get('name') }
               </a>
               <OrganizationList class='dropdown-menu' />
             </li>
