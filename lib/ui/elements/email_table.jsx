@@ -49,4 +49,9 @@ EmailTable = React.createClass({
     );
   },
 
+  showEmail: function(email) {
+    app.goTo('emails/' + email.get('id'));
+    return false;
+  }
+
 });
