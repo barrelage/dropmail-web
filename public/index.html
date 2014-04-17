@@ -54,9 +54,8 @@
     <script src='/js/vendor.js'></script>
     <script src='/js/dropmail.js'></script>
     <script>
-      var dm = new Dropmail({
-        baseURL: "http://0.0.0.0:9393"
-      });
+      var dm = new Dropmail({ baseURL: 'http://api.dropmail.io' });
+      //var dm = new Dropmail({ baseURL: 'http://localhost:9292' });
 
       $(function() {
         var $signup = $('form.signup');

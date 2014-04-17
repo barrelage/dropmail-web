@@ -17,7 +17,8 @@
     <script src='/js/ace/ace.js'></script>
     <script>
       $(function(){
-        var web = new DropmailWeb({ baseURL: 'http://localhost:9393' });
+        var web = new DropmailWeb({ baseURL: 'http://api.dropmail.io' });
+        //var web = new DropmailWeb({ baseURL: 'http://localhost:9292' });
         web.start();
       });
     </script>
