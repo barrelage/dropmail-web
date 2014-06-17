@@ -18,7 +18,7 @@ App = React.createClass({
             </li>
             <li class='dropdown active'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
-                <span class='glyphicon glyphicon-user' />
+                <span class='fa fa-user' />
                 {auth.get('user').get('name')}
               </a>
               <ul class='dropdown-menu'>
@@ -32,32 +32,32 @@ App = React.createClass({
             </li>
             <li class='dropdown'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
-                <span class='glyphicon glyphicon-heart' />
+                <span class='fa fa-heart' />
                 {auth.get('organization').get('name')}
               </a>
               <OrganizationList class='dropdown-menu' />
             </li>
             <li onClick={app.goTo.bind(this, 'templates')}>
               <a href='#'>
-                <span class='glyphicon glyphicon-text-height' />
+                <span class='fa fa-text-height' />
                 Templates
               </a>
             </li>
             <li onClick={app.goTo.bind(this, 'emails')}>
               <a href='#'>
-                <span class='glyphicon glyphicon-envelope' />
+                <span class='fa fa-envelope' />
                 Emails
               </a>
             </li>
             <li onClick={app.goTo.bind(this, 'members')}>
               <a href='#'>
-                <span class='glyphicon glyphicon-flag' />
+                <span class='fa fa-flag' />
                 Members
               </a>
             </li>
             <li onClick={app.goTo.bind(this, 'domains')}>
               <a href='#'>
-                <span class='glyphicon glyphicon-globe' />
+                <span class='fa fa-globe' />
                 Domains
               </a>
             </li>
