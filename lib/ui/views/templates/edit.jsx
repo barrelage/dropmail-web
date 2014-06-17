@@ -6,29 +6,70 @@ Views.Templates.Edit = React.createClass({
   mixins: [FetchTemplateMixin],
 
   getInitialState: function() {
-    var self = this;
+    var self = this
+      , config = {
+          baseHref: '/'
+        , customConfig: ''
+        , fullPage: true
+        , allowedContent: true
+        , toolbar: [
+          {
+            name: 'colors',
+            items: [ 'TextColor', 'BGColor' ]
+          }, {
+            name: 'styles',
+            items: [ 'Format', 'Font', 'FontSize' ]
+          }, {
+            name: 'basicstyles',
+            items: [ 'Bold', 'Italic', 'Underline' ]
+          }, {
+            name: 'paragraph',
+            items: [ 'NumberedList', 'BulletedList', '-', 'Outdent',
+                     'Indent', '-', 'Blockquote', '-','JustifyLeft',
+                     'JustifyCenter', 'JustifyRight' ]
+          }, {
+            name: 'insert',
+            items: [ 'Table', 'HorizontalRule' ]
+          }
+        ]
+      };
 
     this.fetchTemplate(function(err, template) {
-      var params = JSON.stringify(template.get('params'), null, 2);
+      var params = JSON.stringify(template.get('params'), null, 2)
+        , codeEditor = ace.edit('code_editor')
+        , jsonEditor = ace.edit('json_editor')
+        , visualEditor = CKEDITOR.replace('body_editor', config);
 
-      self.state.editor.session.setValue(template.get('html'));
-      self.state.editor.session.on('change', function(e) {
-        self.state.template.set('html', self.state.editor.session.getValue());
-        self.updatePreview();
+      jsonEditor.session.setValue(params);
+
+      self.setState({
+        codeEditor: codeEditor,
+        jsonEditor: jsonEditor,
+        visualEditor: visualEditor
       });
 
-      self.state.jsonEditor.session.setValue(params);
-      self.state.jsonEditor.session.on('change', function(e) {
+      self.updateVisualEditor();
+
+      codeEditor.session.setMode("ace/mode/html");
+      codeEditor.getSession().setTabSize(2);
+      codeEditor.session.on('change', function(e, silent) {
+        self.state.template.set('html', codeEditor.getSession().getValue());
+      });
+
+      jsonEditor.session.setMode("ace/mode/json");
+      jsonEditor.getSession().setTabSize(2);
+      jsonEditor.session.on('change', function(e) {
         try {
-          var params = JSON.parse(self.state.jsonEditor.session.getValue());
+          var params = JSON.parse(jsonEditor.session.getValue());
           self.state.template.set('params', params);
-          self.updatePreview();
         } catch (e) {
           console.error(e);
         }
       });
 
-      self.updatePreview();
+      visualEditor.on('change', function(e) {
+        self.state.template.set('html', e.editor.getData());
+      });
     });
 
     return {
@@ -36,20 +77,6 @@ Views.Templates.Edit = React.createClass({
       email: new app.client.Email,
       errors: {}
     };
-  },
-
-  componentDidMount: function() {
-    var self = this
-      , editor = ace.edit('editor')
-      , jsonEditor = ace.edit('json-editor');
-
-    editor.session.setMode("ace/mode/html");
-    editor.getSession().setTabSize(2);
-
-    jsonEditor.session.setMode("ace/mode/json");
-    jsonEditor.getSession().setTabSize(2);
-
-    this.setState({ editor: editor, jsonEditor: jsonEditor });
   },
 
   render: function() {
@@ -60,11 +87,38 @@ Views.Templates.Edit = React.createClass({
 
           <form
             method='post'
-            class='form-horizontal'
+            class='form-horizontal row'
             onSubmit={this.handleSave}>
 
-            <div class='row'>
-              <div class='col-lg-6 col-sm-12'>
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="#visual"
+                  data-toggle="tab"
+                  onClick={this.updateVisualEditor}>
+                  Visual Editor
+                </a>
+              </li>
+              <li>
+                <a href="#code"
+                  data-toggle="tab"
+                  onClick={this.updateCodeEditor}>
+                  Code Editor
+                </a>
+              </li>
+              <li>
+                <a href="#preview"
+                  data-toggle="tab"
+                  onClick={this.updatePreview}>
+                  Preview
+                </a>
+              </li>
+              <li>
+                <a href="#params" data-toggle="tab">Params</a>
+              </li>
+            </ul>
+
+            <div class="tab-content">
+              <div class="tab-pane active" id="visual">
                 <FormField
                   name='from'
                   label='From'
@@ -78,19 +132,15 @@ Views.Templates.Edit = React.createClass({
                   onChange={this.handleChange} />
 
                 <div class='form-group'>
-                  <div id='editor'></div>
+                  <textarea id='body_editor'></textarea>
                 </div>
-
-                <div class='form-group'>
-                  <div id='json-editor'></div>
-                </div>
-
-                <FormSubmit label='Save' action='Saving' />
-
-                <SendTest handleSend={this.sendPreview} />
               </div>
 
-              <div class='col-lg-6 col-sm-12'>
+              <div class="tab-pane" id="code">
+                <div id='code_editor' class='editor'></div>
+              </div>
+
+              <div class="tab-pane" id="preview">
                 <div>
                   From: <span class='from'>{this.state.email.get('from')}</span>
                 </div>
@@ -100,6 +150,19 @@ Views.Templates.Edit = React.createClass({
                 </div>
 
                 <iframe class='col-sm-12 preview' ref='preview' />
+              </div>
+
+              <div class="tab-pane" id="params">
+                <div class='form-group'>
+                  <div id='json_editor'></div>
+                </div>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='col-lg-12'>
+                <FormSubmit label='Save' action='Saving' />
+                <SendTest handleSend={this.sendPreview} />
               </div>
             </div>
           </form>
@@ -117,6 +180,16 @@ Views.Templates.Edit = React.createClass({
     this.updatePreview();
   },
 
+  updateCodeEditor: function() {
+    var html = this.state.template.get('html');
+    this.state.codeEditor.getSession().setValue(html);
+  },
+
+  updateVisualEditor: function(){
+    var html = this.state.template.get('html');
+    this.state.visualEditor.setData(html);
+  },
+
   updatePreview: function() {
     var self = this
       , $preview = $(this.refs.preview.getDOMNode());
@@ -127,6 +200,42 @@ Views.Templates.Edit = React.createClass({
       $preview.contents().find('body').html(email.get('html'));
       self.setState({ email: email });
     });
+  },
+
+  uploadImage: function(files, editor, welEditable) {
+    var file = files[0]
+      , data = new FormData();
+
+    data.append('image', file);
+
+    $.ajax({
+        url: app.client.baseURL + '/images'
+      , data: data
+      , cache: false
+      , contentType: false
+      , processData: false
+      , type: 'POST'
+      , beforeSend: function (xhr) {
+          var auth = app.client.credentials
+            , basic = btoa(auth.key + ':');
+
+          xhr.setRequestHeader('Authorization', 'Basic ' + basic);
+        }
+      , success: function(data) {
+          var url = data._links.self;
+          editor.insertImage(welEditable, url);
+        }
+    });
+  },
+
+  updateParams: function() {
+    try {
+      var params = JSON.parse(this.state.params.code());
+      this.state.template.set('params', params);
+      this.updatePreview();
+    } catch (e) {
+      console.error(e);
+    }
   },
 
   handleSave: function(callback) {
