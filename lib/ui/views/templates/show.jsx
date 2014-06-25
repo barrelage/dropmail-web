@@ -105,7 +105,10 @@ Views.Templates.Show = React.createClass({
           </div>
         </form>
 
-        <TemplateRevisionList revisions={this.state.revisions} />
+        <TemplateRevisionTable
+          template={this.state.template}
+          revisions={this.state.revisions} />
+
       </div>
     );
   },
@@ -129,21 +132,67 @@ Views.Templates.Show = React.createClass({
   }
 });
 
-TemplateRevisionList = React.createClass({
+TemplateRevisionTableRow = React.createClass({
+
+  render: function() {
+    var self = this
+      , template = this.props.template
+      , revision = this.props.revision;
+
+    publishListItem = function() {
+      if (template.get('published_revision') == revision.get('id')) {
+        return <li>Published</li>;
+      }
+
+      return (
+        <li onClick={self.props.handlePublish} class='dm-text-link'>Publish</li>
+      );
+    }
+
+    return (
+      <tr>
+        <td>{revision.get('user').get('name')}</td>
+        <td>{revision.get('created_at')}</td>
+        <td class='dm-text-monospace'>{revision.get('id')}</td>
+        <td>
+          <ul class='list-inline'>
+            <li class='dm-text-link'>View</li>
+            {publishListItem()}
+          </ul>
+        </td>
+      </tr>
+    );
+  }
+
+});
+
+TemplateRevisionTable = React.createClass({
+
+  componentWillReceiveProps: function(nextProps) {
+    this.setState(nextProps);
+  },
+
+  getInitialState: function() {
+    return { template: this.props.template, revisions: this.props.revisions };
+  },
 
   getDefaultProps: function() {
     return { revisions: [] };
   },
 
   render: function() {
-    function listItem(revision){
-      return (
-        <tr>
-          <td>{revision.get('user').get('name')}</td>
-          <td>{revision.get('created_at')}</td>
-        </tr>
+    var self = this
+      , template = this.state.template
+      , rows = [];
+
+    this.state.revisions.forEach(function(revision) {
+      rows.push(
+        <TemplateRevisionTableRow
+          template={template}
+          revision={revision}
+          handlePublish={self._publishRevision.bind(null, revision)}/>
       );
-    }
+    });
 
     return (
       <table class='table table-striped'>
@@ -151,14 +200,25 @@ TemplateRevisionList = React.createClass({
           <tr>
             <th>User</th>
             <th>Created At</th>
+            <th>Revision</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
-          {this.props.revisions.map(listItem)}
+          {rows}
         </tbody>
       </table>
     );
   },
+
+  _publishRevision: function(revision) {
+    var self = this;
+
+    revision.publish(function(err, template) {
+      if (err) return console.error(err);
+      self.setState({ template: template });
+    });
+  }
 
 });
