@@ -101,7 +101,7 @@ var AdminTemplateEdit = React.createClass({
               <div className="form-group">
                 <ul className="list-inline">
                   <li>
-                    <Button type="submit" action="primary">
+                    <Button type="submit" action="primary" onClick={this._onSave}>
                       Save
                     </Button>
                   </li>
@@ -166,6 +166,17 @@ var AdminTemplateEdit = React.createClass({
       if (err) return console.error(err);
 
       console.log('email sent');
+    });
+
+    return false;
+  },
+
+  _onSave: function() {
+    var self = this;
+
+    this.state.template.save(function(err, template) {
+      if (err) return console.error(err);
+      self.setState({ template: template });
     });
 
     return false;
