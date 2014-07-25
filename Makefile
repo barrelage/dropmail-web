@@ -1,108 +1,33 @@
-SHELL=/bin/bash
-MAKEFLAGS += --check-symlink-times
-
-# submodules
-
-DM_API = vendor/dropmail-api
-DM_JS  = vendor/dropmail.js
-
-# sources
-
-SRC_UI  = $(shell find lib/ui -name "*.jsx")
-SRC_WEB = $(shell find lib -name "*.js")
-SRC_LIB = $(PWD)/$(DM_JS)/build/dropmail.js
-SRC_VEN = $(shell find vendor/js -name "*.js")
-SRC_LES = $(shell find less -name "*.less")
-
-# targets
-
-APP     = build/js/app.js
-APP_UI  = build/js/app/ui.js
-APP_WEB = build/js/app/web.js
-LIB     = build/js/dropmail.js
-VEN     = build/js/vendor.js
-CSS     = build/css/app.css
-
-APP_MIN = $(APP:.js=.min.js)
-LIB_MIN = $(LIB:.js=.min.js)
-VEN_MIN = $(VEN:.js=.min.js)
-CSS_MIN = $(CSS:.css=.min.css)
-
-# helpers
-
-color-line  = \r\033[$(1)m$(2) \033[0m$(3)\033[K
-log-info    = echo -e "$(call color-line,90,   $(1),$(2))"
-log-success = echo -e "$(call color-line,92,✔  $(1),$(2))"
+WEBPACK_BIN = node ./node_modules/webpack/bin/webpack.js
 
 default: install build
 
 install: node_modules submodules
 
-update: install
-	@git submodule foreach git checkout master
-	@git submodule foreach git pull origin master
+build:
+	@$(WEBPACK_BIN) --colors --progress
+	@npm shrinkwrap
 
-build: $(APP_MIN) $(LIB_MIN) $(VEN_MIN) $(CSS)
-
-quiet: build
-	@echo > /dev/null
-
-watch:
-	@while :; do \
-		make quiet; \
-		spin=(/ - \\ \|) \
-		  && next=$${spin[$$(expr $$(date +%s) % 4)]} \
-			&& echo -e -n "$(call color-line,90,=> Watching for changes... $${next})"; \
-		sleep 1; \
-	done
+bundle:
+	@$(WEBPACK_BIN) --optimize-minimize --optimize-dedupe --colors --progress
+	@npm shrinkwrap
 
 clean:
-	@cd $(DM_JS) && make clean
-	@rm -f $(shell find build -name "*.css" -o -name "*.js")
+	@rm -f public/bundle/*
 
-# targets
+server:
+	@node server.js
 
-$(APP_MIN): $(APP)
-	@./node_modules/.bin/uglifyjs $^ > $@
-
-$(APP): $(APP_LIB) $(APP_UI) $(APP_WEB)
-	@cat $^ > $@
-
-$(APP_UI): $(SRC_UI)
-	@./node_modules/react-tools/bin/jsx \
-		--cache-dir $(TMPDIR) \
-		--extension jsx \
-		lib/ui \
-		build/js/ui
-	@cat `find build/js/ui -name "*.js"` > $@
-
-$(APP_WEB): $(SRC_WEB)
-	@cat $^ > $@
-
-$(VEN_MIN): $(VEN)
-	@./node_modules/.bin/uglifyjs $^ > $@
-
-$(VEN): $(SRC_VEN)
-	@cat $^ > $@
-
-$(LIB_MIN): $(LIB)
-	@./node_modules/.bin/uglifyjs $^ > $@
-
-$(LIB): $(SRC_LIB)
-	@ln -fns $(SRC_LIB) $@
-
-$(CSS): $(SRC_LES)
-	@./node_modules/.bin/lessc less/dropmail.less > $@
+watch:
+	@$(WEBPACK_BIN) -d --progress --colors --watch --debug
 
 # dependencies
-
-$(SRC_LIB):
-	@cd $(DM_JS) && make quiet
 
 node_modules:
 	@npm install
 
 submodules:
-	@git submodule update --init
-	@cd $(DM_API) && bundle
-	@cd $(DM_JS) && make install
+	@git submodule init
+	@git submodule update
+
+.PHONY: install clean build

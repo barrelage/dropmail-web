@@ -1,15 +1,6 @@
-[submodule "vendor/bootstrap"]
-  path = vendor/bootstrap
-  url = git@github.com:twbs/bootstrap.git
 [submodule "vendor/dropmail.js"]
-  path = vendor/dropmail.js
-  url = git@github.com:barrelage/dropmail.js.git
-[submodule "vendor/dropmail-api"]
-	path = vendor/dropmail-api
-	url = git@github.com:barrelage/dropmail-api.git
+	path = vendor/dropmail.js
+	url = https://github.com/barrelage/dropmail.js.git
 [submodule "vendor/ace"]
 	path = vendor/ace
 	url = https://github.com/ajaxorg/ace-builds.git
-[submodule "vendor/font-awesome"]
-	path = vendor/font-awesome
-	url = https://github.com/FortAwesome/Font-Awesome.git
