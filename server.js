@@ -4,7 +4,7 @@ var connect = require('connect')
   , fs = require('fs')
   , index = fs.readFileSync('./public/index.html')
   , app = connect()
-  , port = 3000;
+  , port = Number(process.env.PORT || 3000);
 
 app.use(static('public'));
 
