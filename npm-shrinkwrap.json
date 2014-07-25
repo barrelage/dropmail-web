@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "dependencies": {
     "connect": {
-      "version": "3.0.1",
+      "version": "3.0.2",
       "from": "connect@~3.0.1",
+      "resolved": "https://registry.npmjs.org/connect/-/connect-3.0.2.tgz",
       "dependencies": {
         "debug": {
-          "version": "1.0.2",
-          "from": "debug@1.0.2",
+          "version": "1.0.3",
+          "from": "debug@1.0.3",
           "dependencies": {
             "ms": {
               "version": "0.6.2",
@@ -20,6 +21,16 @@
           "version": "0.0.2",
           "from": "finalhandler@0.0.2",
           "dependencies": {
+            "debug": {
+              "version": "1.0.2",
+              "from": "debug@1.0.2",
+              "dependencies": {
+                "ms": {
+                  "version": "0.6.2",
+                  "from": "ms@0.6.2"
+                }
+              }
+            },
             "escape-html": {
               "version": "1.0.1",
               "from": "escape-html@1.0.1"
@@ -27,8 +38,8 @@
           }
         },
         "parseurl": {
-          "version": "1.0.1",
-          "from": "parseurl@1.0.1"
+          "version": "1.1.3",
+          "from": "parseurl@~1.1.3"
         },
         "utils-merge": {
           "version": "1.0.0",
@@ -93,56 +104,12 @@
       "from": "file-loader@*",
       "dependencies": {
         "loader-utils": {
-          "version": "0.2.2",
+          "version": "0.2.3",
           "from": "loader-utils@0.2.x",
           "dependencies": {
             "json5": {
               "version": "0.1.0",
               "from": "json5@0.1.x"
-            }
-          }
-        }
-      }
-    },
-    "envify": {
-      "version": "1.2.1",
-      "from": "envify@~1.2.0",
-      "dependencies": {
-        "xtend": {
-          "version": "2.1.2",
-          "from": "xtend@~2.1.2",
-          "dependencies": {
-            "object-keys": {
-              "version": "0.4.0",
-              "from": "object-keys@~0.4.0"
-            }
-          }
-        },
-        "through": {
-          "version": "2.3.4",
-          "from": "through@~2.3.4"
-        },
-        "esprima-fb": {
-          "version": "3001.1.0-dev-harmony-fb",
-          "from": "esprima-fb@~3001.1.0-dev-harmony-fb"
-        },
-        "jstransform": {
-          "version": "3.0.0",
-          "from": "jstransform@~3.0.0",
-          "dependencies": {
-            "base62": {
-              "version": "0.1.1",
-              "from": "base62@0.1.1"
-            },
-            "source-map": {
-              "version": "0.1.31",
-              "from": "source-map@0.1.31",
-              "dependencies": {
-                "amdefine": {
-                  "version": "0.1.0",
-                  "from": "amdefine@>=0.0.4"
-                }
-              }
             }
           }
         }
@@ -164,10 +131,6 @@
           "version": "2.34.0",
           "from": "request@~2.34.0",
           "dependencies": {
-            "qs": {
-              "version": "0.6.6",
-              "from": "qs@~0.6.0"
-            },
             "json-stringify-safe": {
               "version": "5.0.0",
               "from": "json-stringify-safe@~5.0.0"
@@ -185,7 +148,7 @@
               "from": "tough-cookie@>=0.12.0",
               "dependencies": {
                 "punycode": {
-                  "version": "1.2.4",
+                  "version": "1.3.0",
                   "from": "punycode@>=0.2.0"
                 }
               }
@@ -279,7 +242,7 @@
           }
         },
         "source-map": {
-          "version": "0.1.34",
+          "version": "0.1.37",
           "from": "source-map@0.1.x",
           "dependencies": {
             "amdefine": {
