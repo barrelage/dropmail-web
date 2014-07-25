@@ -4,6 +4,9 @@
   "description": "Dropmail Web",
   "author": "Tyler Smalley",
   "main": "src/main.js",
+  "engines": {
+    "node": "0.10.x"
+  },
   "dependencies": {
     "connect": "~3.0.1",
     "serve-static": "~1.2.3"
