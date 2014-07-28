@@ -55,6 +55,9 @@ var Routes = React.createClass({
     // Organizations
     ['/admin/organizations', require('../pages/AdminOrganizations')],
 
+    // Account
+    ['/admin/account', require('../pages/AdminAccount')],
+
     // 404's
     ['/admin/*', require('../pages/AdminNotFound')],
     ['*', require('../pages/NotFound')]
