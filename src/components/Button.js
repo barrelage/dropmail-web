@@ -9,6 +9,11 @@
  */
 var React = require('react/addons');
 
+/**
+ * Components
+ */
+var Icon = require('./Icon');
+
 var Button = React.createClass({
 
   propTypes: {
@@ -18,14 +23,16 @@ var Button = React.createClass({
     ]),
     size: React.PropTypes.oneOf(['lg', 'sm', 'xs']),
     active: React.PropTypes.bool,
-    disabled: React.PropTypes.bool
+    disabled: React.PropTypes.bool,
+    processing: React.PropTypes.bool
   },
 
   getDefaultProps: function() {
     return {
       action: 'default',
       active: false,
-      disabled: false
+      disabled: false,
+      processing: false
     };
   },
 
@@ -34,7 +41,7 @@ var Button = React.createClass({
     var classes = classSet({
       'btn': true,
       'active': this.props.active,
-      'disabled': this.props.disabled
+      'disabled': this._isDisabled()
     });
 
     classes += ' btn-' + this.props.action;
@@ -44,8 +51,24 @@ var Button = React.createClass({
     }
 
     return this.transferPropsTo(
-      <button className={classes}>{this.props.children}</button>
+      <button className={classes}>{this._children()}</button>
     );
+  },
+
+  _children: function() {
+    if (this.props.processing) {
+      return (
+        <span>
+          <Icon type="spinner" spin={true} /> {this.props.children}
+        </span>
+      );
+    }
+
+    return this.props.children;
+  },
+
+  _isDisabled: function() {
+    return this.props.disabled || this.props.processing;
   }
 
 });

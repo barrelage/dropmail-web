@@ -30,7 +30,8 @@ var AdminTemplateEdit = React.createClass({
 
   getInitialState: function() {
     return {
-      template: new Dropmail.Template
+      template: new Dropmail.Template,
+      saving: false
     };
   },
 
@@ -101,7 +102,12 @@ var AdminTemplateEdit = React.createClass({
               <div className="form-group">
                 <ul className="list-inline">
                   <li>
-                    <Button type="submit" action="primary" onClick={this._onSave}>
+                    <Button
+                      type="submit"
+                      action="primary"
+                      processing={this.state.saving}
+                      onClick={this._onSave}>
+
                       Save
                     </Button>
                   </li>
@@ -174,9 +180,15 @@ var AdminTemplateEdit = React.createClass({
   _onSave: function() {
     var self = this;
 
+    this.setState({ saving: true });
+
     this.state.template.save(function(err, template) {
-      if (err) return console.error(err);
-      self.setState({ template: template });
+      if (err) {
+        self.setState({ saving: false });
+        return console.error(err);
+      }
+
+      self.setState({ template: template, saving: false });
     });
 
     return false;
@@ -211,7 +223,7 @@ var SendPreview = React.createClass({
     }
 
     return (
-      <form method='post' className='send-preview' onSubmit={this._onSubmit}>
+      <form className='send-preview' onSubmit={this._onSubmit}>
         <div className="input-group">
           <input
             ref='to'
