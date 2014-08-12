@@ -34,17 +34,13 @@ var AuthorizationStateMixin = {
   requireAuthorization: function() {
     if (this.state.currentAuthorization.isSignedIn() == true) return;
 
-    setTimeout(function() {
-      PageActions.goTo('/signin');
-    }, 1);
+    PageActions.goTo('/signin');
   },
 
   disallowAuthorization: function() {
     if (this.state.currentAuthorization.isSignedIn() == false) return;
 
-    setTimeout(function() {
-      PageActions.goTo('/admin');
-    }, 1);
+    PageActions.goTo('/admin');
   },
 
   _onAuthorizationChange: function() {

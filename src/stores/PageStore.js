@@ -15,6 +15,8 @@ var AuthorizationStore = require('./AuthorizationStore');
  */
 
 function set(page) {
+  if (_pages[0] == page) return;
+
   _pages.unshift(page);
   PageStore.emitChange();
 }
@@ -44,9 +46,14 @@ var PageStore = merge(EventEmitter.prototype, {
     var action = payload.action
       , path = payload.data;
 
+
     switch(action) {
       case AppConstants.PAGE_GOTO:
         set(path);
+        break;
+
+      case AppConstants.PAGE_PUSH:
+        history.pushState(null, null, path);
         break;
 
       default:

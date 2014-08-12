@@ -45,15 +45,15 @@ var AdminDomain = React.createClass({
             </ol>
 
             <p>
-              <strong>Status: </strong>{domain.get('status')}
+              <strong>Status:</strong> {domain.get('status')}
             </p>
 
             <p>
-              <strong>Verification Token: </strong> <span className="text-monospace">{domain.get('verification_token')}</span>
+              <strong>Verification Token:</strong> <span className="text-monospace">{domain.get('verification_token')}</span>
             </p>
 
             <p>
-              <strong>Added: </strong> {moment(domain.get('created_at')).format('MMMM Do YYYY, h:mm:ss a')}
+              <strong>Added:</strong> {moment(domain.get('created_at')).format('MMMM Do YYYY, h:mm:ss a')}
             </p>
           </div>
         </div>

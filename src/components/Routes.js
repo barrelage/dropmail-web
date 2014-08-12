@@ -21,6 +21,12 @@ var PageStore = require('../stores/PageStore');
  */
 var PageActions = require('../actions/PageActions');
 
+/**
+ * Pages
+ */
+var MarketingPage = require('../pages/MarketingPage')
+  , AdminPage = require('../pages/AdminPage');
+
 function getPageState() {
   return PageStore.current();
 }
@@ -71,10 +77,22 @@ var Routes = React.createClass({
       var path = route[0]
         , Component = route[1];
 
-      page(path, function(ctx) {
+      // Force React to re-initialize the component
+      var reset = function(ctx, next) {
+        var Page = MarketingPage;
+        if (route[0].indexOf('/admin/')) Page = AdminPage;
+
+        self.setState({ component: <Page _route={ctx} /> });
+        self.forceUpdate(next);
+      }
+
+      var load = function(ctx) {
         ctx.query = qs.parse(ctx.querystring);
+
         self.setState({ component: <Component _route={ctx} /> });
-      });
+      }
+
+      page(path, reset, load);
     });
 
     PageActions.goTo(currentPath);
@@ -96,7 +114,12 @@ var Routes = React.createClass({
   },
 
   _onChange: function() {
-    page(getPageState());
+    var show = function() {
+      page.show(getPageState());
+    }
+
+    // move to end of queue
+    setTimeout(show, 0);
   }
 
 });

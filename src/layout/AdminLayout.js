@@ -36,9 +36,11 @@ var AdminLayout = React.createClass({
     AuthorizationStateMixin
   ],
 
-  render: function() {
+  componentWillMount: function() {
     this.requireAuthorization();
+  },
 
+  render: function() {
     return this.transferPropsTo(
       <div id="admin">
         <div className="container-fluid">

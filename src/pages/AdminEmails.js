@@ -13,19 +13,15 @@ var React = require('react/addons')
   , qs = require('qs');
 
 /**
- * Layouts
+ * Pages
  */
-var AdminLayout = require('../layout/AdminLayout');
+var AdminPage = require('../pages/AdminPage');
 
 /**
  * Components
  */
-var ListItemLink = require('../components/ListItemLink')
-  , Button = require('../components/Button')
-  , Link = require('../components/Link')
-  , Icon = require('../components/Icon')
-  , Pager = require('../components/bootstrap/Pager')
-  , PageItem = require('../components/bootstrap/PageItem');
+var Icon = require('../components/Icon')
+  , Pagination = require('../components/Pagination');
 
 /**
  * Actions
@@ -34,208 +30,36 @@ var PageActions = require('../actions/PageActions');
 
 var AdminEmails = React.createClass({
 
-  getInitialState: function() {
-    var query = merge({ page: 1 }, this.props._route.query)
-    return { emails: [], total: 0, pages: 1, query: query };
-  },
-
-  componentDidMount: function() {
-    this._loadEmails();
-  },
-
-  componentDidUpdate: function(nextProps, nextState) {
-    // Load new emails when query changes
-    if (this.state.query !== nextState.query) this._loadEmails();
-  },
-
   render: function() {
-    var emails = [];
-
-    this.state.emails.forEach(function(email) {
-      emails.push(
-        <EmailListItem key={email.get('id')} email={email} />
-      );
-    });
-
     return (
-      <AdminLayout>
+      <AdminPage>
         <div className="row">
           <div className="col-sm-12">
             <ol className="breadcrumb">
               <li className="active">Emails</li>
             </ol>
 
-            <div className="checkbox">
-              <label>
-                <input
-                  name="clicked"
-                  type="checkbox"
-                  checked={this.state.query.clicked == 'true'}
-                  onChange={this._filter} />
-
-                Clicked link
-              </label>
-            </div>
-            <div className="checkbox">
-              <label>
-                <input
-                  name="opened"
-                  type="checkbox"
-                  checked={this.state.query.opened == 'true'}
-                  onChange={this._filter} />
-
-                Opened
-              </label>
-            </div>
-            <div className="checkbox">
-              <label>
-                <input
-                  name="bounced"
-                  type="checkbox"
-                  checked={this.state.query.bounced == 'true'}
-                  onChange={this._filter} />
-
-                Bounced
-              </label>
-            </div>
-            <div className="checkbox">
-              <label>
-                <input
-                  name="complained"
-                  type="checkbox"
-                  checked={this.state.query.complained == 'true'}
-                  onChange={this._filter} />
-
-                Reported as spam
-              </label>
-            </div>
-
-            <div className="list-group">
-              {emails}
-            </div>
-
-            <Pager>
-              <PageItem handleClick={this._previousPage} disabled={this.state.query.page == 1} previous>Previous</PageItem>
-              <PageItem handleClick={this._nextPage} disabled={this.state.pages <= this.state.query.page} next>Next</PageItem>
-            </Pager>
+            <Pagination
+              resource={Dropmail.Email}
+              rowComponent={EmailListItem}
+              _route={this.props._route} />
 
           </div>
         </div>
-      </AdminLayout>
+      </AdminPage>
     );
-  },
-
-  _filter: function(event) {
-    var target = event.target
-      , query = merge(this.state.query, { page: 1 }) // creates shallow clone
-      , href;
-
-    if (target.checked) {
-      query[target.name] = 'true';
-    } else {
-      delete query[target.name];
-    }
-
-    href = this.props._route.pathname + '?' + qs.stringify(query);
-
-    PageActions.goTo(href);
-    this.setState({ query: query });
-
-    return false;
-  },
-
-  _previousPage: function() {
-    var page = this.state.query.page - 1
-      , query = merge(this.state.query, { page: page })
-      , href = this.props._route.pathname + '?' + qs.stringify(query)
-
-    PageActions.goTo(href);
-    this.setState({ query: query });
-
-    return false;
-  },
-
-  _nextPage: function() {
-    var page = this.state.query.page + 1
-      , query = merge(this.state.query, { page: page })
-      , href = this.props._route.pathname + '?' + qs.stringify(query)
-
-    PageActions.goTo(href);
-    this.setState({ query: query });
-    return false;
-  },
-
-  _hadFilter: function(type) {
-    return this.props.query[type] == true;
-  },
-
-  _loadEmails: function() {
-    var self = this;
-
-    Dropmail.Email.fetch(this.state.query, function(err, data) {
-      if (err) return console.error(err);
-
-      self.setState({
-        emails: data.emails,
-        total: data.total,
-        pages: data.total / data.per_page
-      });
-    });
   }
 
 });
 
 /**
- * Pagination React Component
- */
-var Pagination = React.createClass({
-
-  getDefaultProps: function() {
-    return {
-      next: null,
-      previous: null
-    };
-  },
-
-  render: function() {
-    return (
-      <ul className="pager">
-        {this._listItem('previous', 'Previous')}
-        {this._listItem('next', 'Next')}
-      </ul>
-    );
-  },
-
-  _listItem: function(type, name) {
-    var classes = type
-      , href = this.props[type];
-
-    if (!href) classes += ' disabled';
-
-    return (
-      <li className={classes}>
-        <a href="#" onClick={this._onClick.bind(null, type)}>
-          {name || type}
-        </a>
-      </li>
-    );
-  },
-
-  _onClick: function(type) {
-    PageActions.goTo(this.props[type]);
-    return false;
-  }
-
-});
-
-/**
- * EmailListIten
+ * EmailListItem
  */
 var EmailListItem = React.createClass({
 
   render: function() {
     var ClassSet = React.addons.classSet
-      , email = this.props.email
+      , email = this.props.data
       , classes = ClassSet({
         'list-group-item': true,
         'list-group-item-danger': this._hasError()
@@ -264,7 +88,7 @@ var EmailListItem = React.createClass({
   },
 
   _openedBadge: function() {
-    if (this.props.email.get('opened') !== true) return;
+    if (this.props.data.get('opened') !== true) return;
 
     return (
       <span className="text-success badge">
@@ -274,7 +98,7 @@ var EmailListItem = React.createClass({
   },
 
   _clickedBadge: function() {
-    if (this.props.email.get('clicked') !== true) return;
+    if (this.props.data.get('clicked') !== true) return;
 
     return (
       <span className="text-success badge">
@@ -284,7 +108,7 @@ var EmailListItem = React.createClass({
   },
 
   _bouncedBadge: function() {
-    if (this.props.email.get('bounced') !== true) return;
+    if (this.props.data.get('bounced') !== true) return;
 
     return (
       <span className="badge">
@@ -294,7 +118,7 @@ var EmailListItem = React.createClass({
   },
 
   _complainedBadge: function() {
-    if (this.props.email.get('complained') !== true) return;
+    if (this.props.data.get('complained') !== true) return;
 
     return (
       <span className="badge">
@@ -304,12 +128,12 @@ var EmailListItem = React.createClass({
   },
 
   _hasError: function() {
-    var email = this.props.email;
+    var email = this.props.data;
     return email.get('bounced') || email.get('complained');
   },
 
   _onClick: function() {
-    PageActions.goTo('/admin/emails/' + this.props.email.get('id'));
+    PageActions.goTo('/admin/emails/' + this.props.data.get('id'));
   }
 
 });

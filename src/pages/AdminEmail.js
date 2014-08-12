@@ -21,6 +21,11 @@ var ListItemLink = require('../components/ListItemLink')
   , Button = require('../components/Button')
   , Link = require('../components/Link');
 
+/**
+ * Actions
+ */
+var PageActions = require('../actions/PageActions');
+
 var AdminEmail = React.createClass({
 
   getInitialState: function() {
@@ -43,17 +48,20 @@ var AdminEmail = React.createClass({
               <li className="active">{email.get('id')}</li>
             </ol>
 
-            <p>
-              <strong>From: </strong>{email.get('from')}
-            </p>
+            <dl>
+              <dt>From:</dt>
+              <dd>{email.get('from')}</dd>
 
-            <p>
-              <strong>To: </strong>{email.get('to')}
-            </p>
+              <dt>To:</dt>
+              <dd>
+                <a href="#" onClick={this._showUserEmails}>
+                  {email.get('to')}
+                </a>
+              </dd>
 
-            <p>
-              <strong>Subject: </strong>{email.get('subject')}
-            </p>
+              <dt>Subject:</dt>
+              <dd>{email.get('subject')}</dd>
+            </dl>
 
             <p>
               <iframe id="preview" ref="preview" />
@@ -73,6 +81,11 @@ var AdminEmail = React.createClass({
       self.setState({ email: email });
     });
 
+  },
+
+  _showUserEmails: function() {
+    PageActions.goTo('/admin/emails?to=' + this.state.email.get('to'));
+    return false;
   }
 
 });
