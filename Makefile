@@ -4,10 +4,6 @@ default: install build
 
 install: node_modules submodules
 
-build:
-	@$(WEBPACK_BIN) --colors --progress
-	@npm shrinkwrap
-
 clean:
 	@rm -f public/bundle/*
 

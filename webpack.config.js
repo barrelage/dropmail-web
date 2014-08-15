@@ -1,3 +1,6 @@
+var webpack = require('webpack')
+  , env = process.env.NODE_ENV || 'development';
+
 module.exports = {
   entry: "./src/main.js",
   output: {
@@ -10,6 +13,9 @@ module.exports = {
       {
         test: /\.js$/,
         loader: "jsx-loader?harmony"
+      }, {
+        test: /\.jsx$/,
+        loader: "jsx-loader?harmony&insertPragma=React.DOM"
       }, {
         test: /\.less$/,
         loader: "style-loader!css-loader!less-loader"
@@ -43,7 +49,13 @@ module.exports = {
       }
     ]
   },
-  plugins: [],
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(env)
+      }
+    })
+  ],
   resolve: {
     alias: {
       moment: 'moment/moment.js',
