@@ -27,30 +27,15 @@ var PageHeader = require('../components/PageHeader')
   , Alert = require('../components/Alert')
   , FormField = require('../components/FormField')
   , Button = require('../components/Button')
-  , Link = require('../components/Link');
+  , Link = require('../components/Link')
+  , Pagination = require('../components/Pagination');
 
 /**
  * AdminTemplates React Class
  */
 var AdminTemplates = React.createClass({
 
-  getInitialState: function() {
-    return { templates: [] };
-  },
-
-  componentDidMount: function() {
-    this._loadTemplates();
-  },
-
   render: function() {
-    var templates = [];
-
-    this.state.templates.forEach(function(template) {
-      templates.push(
-        <TemplateListItem key={template.get('id')} template={template} />
-      );
-    });
-
     return (
       <AdminLayout>
         <div className="row">
@@ -59,9 +44,11 @@ var AdminTemplates = React.createClass({
               <li className="active">Templates</li>
             </ol>
 
-            <div className="list-group">
-              {templates}
-            </div>
+            <Pagination
+              resource={Dropmail.Template}
+              rowComponent={TemplateListItem}
+              _route={this.props._route} />
+
           </div>
         </div>
 
@@ -80,15 +67,6 @@ var AdminTemplates = React.createClass({
         </div>
       </AdminLayout>
     );
-  },
-
-  _loadTemplates: function() {
-    var self = this;
-
-    Dropmail.Template.fetch(function(err, data) {
-      if (err) return console.error(err);
-      self.setState({ templates: data.templates });
-    });
   }
 
 });
@@ -99,7 +77,7 @@ var AdminTemplates = React.createClass({
 var TemplateListItem = React.createClass({
 
   render: function() {
-    var template = this.props.template
+    var template = this.props.data
       , updated_at = template.get('updated_at');
 
     return (
@@ -116,7 +94,7 @@ var TemplateListItem = React.createClass({
   },
 
   _onClick: function() {
-    PageActions.goTo('/admin/templates/' + this.props.template.get('id'));
+    PageActions.goTo('/admin/templates/' + this.props.data.get('id'));
   }
 
 });

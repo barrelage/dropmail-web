@@ -25,8 +25,10 @@ var PageActions = require('../actions/PageActions');
 var Pagination = React.createClass({
 
   getInitialState: function() {
+    var query = this.props._route.query;
+
     return {
-      query: this.props._route.query,
+      query: merge({ page: 1 }, query),
       rows: [],
       total: 0,
       pages: 1
@@ -53,7 +55,7 @@ var Pagination = React.createClass({
 
     return (
       <div>
-       <div calssName="list-group">
+       <div className="list-group">
           {rows}
         </div>
 
@@ -106,7 +108,7 @@ var Pagination = React.createClass({
     var page = parseInt(this.state.query.page) + pageOffset
       , query = merge(this.state.query, { page: page });
 
-    this.setState({ query: query });
+    this.setState({ query: query }, this._fetch);
 
     return false;
   }

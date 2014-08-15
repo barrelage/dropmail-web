@@ -5,11 +5,7 @@ default: install build
 install: node_modules submodules
 
 build:
-	@$(WEBPACK_BIN) --colors --progress --optimize-minimize
-	@npm shrinkwrap
-
-bundle:
-	@$(WEBPACK_BIN) --optimize-minimize --optimize-dedupe --colors --progress
+	@$(WEBPACK_BIN) --colors --progress
 	@npm shrinkwrap
 
 clean:
